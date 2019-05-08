@@ -1,0 +1,263 @@
+{% extends 'home/public/cartbase.html' %}
+
+{% block title %}购物车列表页面{% endblock %}
+
+{% block mystyle %}
+
+{% endblock %}
+
+<!-- 网页内容区域开始-->
+{% block containes %}
+       <div class="cart-header wrapper">
+            <div class="logo">
+                <a href="{% url 'index' %}"><img src="/static/home/img/logo3.png" alt="logo" /></a>
+            </div>
+            <div class="step-box">
+                <div class="row">
+                    <div class="step first active col-3">
+                        <span class="num">1</span><span class="line"></span><span class="label">我的购物车</span>
+                    </div>
+                    <div class="step active col-3">
+                        <span class="num">2</span><span class="line"></span><span class="label">确认订单信息</span>
+                    </div>
+                    <div class="step col-3">
+                        <span class="num">3</span><span class="line"></span><span class="label">选择支付方式</span>
+                    </div>
+                    <div class="step last col-3">
+                        <span class="num">4</span><span class="line"></span><span class="label">完成付款</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    <div class="wrapper confirm-wrap">
+        <div class="confirm-tit">
+            <span class="tit">选择收货地址 :</span>
+        </div>
+        <div class="confirm-address clearfix">
+            {% for ads in address %}
+            <div class="col col-4">
+                <div class="item set_default {% if ads.u_status == 1 %}active{% endif %}">
+                    <div class="action">
+                        <a class="edit" href="javascript:;">修改</a>
+                    </div>
+                    <div class="info" sid="{{ ads.id }}">
+                        <div class="ellipsis"><img src="/static/home/img/ico/user.jpg" alt="" />{{ ads.u_address }}（{{ ads.u_name }} 收）</div>
+                        <div class="ellipsis"><img src="/static/home/img/ico/dizhi.jpg" alt="" />{{ ads.u_detail }}</div>
+                        <div class="ellipsis"><img src="/static/home/img/ico/tel.jpg" alt="" />{{ ads.u_iphone }}</div>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+            <div class="col col-4">
+                <a class="item va-m-box ta-c add">
+                    <div class="add-new">
+                        <span class="ico"><i class="iconfont icon-tianjia"></i></span>
+                        <div class="label">添加收货地址</div>
+                    </div>
+                </a>
+            </div>
+        </div>
+        <div class="confirm-address-bar"  style="display: none;">
+            <a href="javascript:;" class="drop" data-action="drop">显示全部地址</a>
+        </div>
+
+        <div class="confirm-tit">
+           <span class="tit">确认商品信息:</span><div class="right"><a class="back" href="{% url 'cart_list' %}">返回购物车></a></div>
+        </div>
+        <div class="confirm-goods">
+            <div class="confirm-goods-hd clearfix">
+                <div class="col col1">店铺：我家的店</div>
+                <div class="col col2">单价（元）</div>
+                <div class="col col3">数量</div>
+                <div class="col col4">小计（元）</div>
+            </div>
+            {% load mytags %}
+            {% for val in data.values %}
+            {% for v in val %}
+            <div class="confirm-goods-bd">
+                <div class="goods clearfix">
+                    <div class="col col1">
+                        <img src="{{ v.pic }}" alt="{{ v.name }}">
+                        <div class="info">
+                            <div class="name">{{ v.name }}</div>
+                            <div class="meta"><span>{{ v.color }}</span></div>
+                        </div>
+                    </div>
+                    <div class="col col2">￥{{ v.price }}</div>
+                    <div class="col col3">{{ v.num }}</div>
+                    <div class="col col4">￥<span class="smltotal">{% salaprice v.price v.num %}</span></div>
+                </div>
+            </div>
+            {% endfor %}
+            {% endfor %}
+            <div class="confirm-goods-ft clearfix">
+                <!--<div class="fl"><span class="vm-ib">买家留言： </span><textarea class="ui-txtin" style="width: 410px;" name="" placeholder="在此输入给商家的留言"></textarea></div>-->
+                <div class="fr">合计金额(含运费): <span class="totalprice"></span></div>
+            </div>
+        </div>
+        <form action="{% url 'make_order' %}" method="post">
+        <div class="confirm-total">
+            <div class="box">
+                <input type="hidden" name="aid" value="" id="aid">
+                <div class="item">应付总额：<strong></strong></div>
+                <button class="ui-btn-theme go-charge">去结算</button>
+            </div>
+        </div>
+        </form>
+    </div>
+
+{% endblock %}
+<!-- 网页内容区域结束-->
+{% block myjs %}
+<script>
+layui.extend({
+	admin: '{/}/static/back/js/admin'
+});
+layui.use(['table', 'jquery','form', 'admin','layer'], function() {
+	var table = layui.table,
+        layer = layui.layer,
+        form = layui.form,
+		$ = layui.jquery;
+
+
+    //自定义验证规则
+      form.verify({
+          title: function(value){
+            if(!new RegExp("^[\u4e00-\u9fa5a-zA-Z0-9]+$").test(value)){
+              return '收货人名称允许字母、数字、汉字';
+            }
+          }
+      });
+
+    //收货地址
+    $('.confirm-address .edit,.confirm-address .add').on('click',function () {
+        layer.open({
+          type: 1,
+          shadeClose: true,
+          title: '会员收货地址',
+          skin: 'layui-layer-seaing', //加上边框
+          area: ['800px', 'auto'], //宽高
+          content: $('#addressform')
+        });
+    })
+
+    //添加地址
+    form.on('submit(addtype)',function(data){
+        var addform = $("#addform").serialize();
+        console.log(addform)
+        //提交数据
+        $.ajax({
+            async: false,
+            data:addform,
+            type:'GET',
+            dataType: 'json',
+            success: function(result) {
+                if (result.code == 1) {
+                    layer.msg(result.msg, {time: 2000, icon:6,offset: '20px',anim: 6},function(){
+                        layer.closeAll();
+                        window.location.reload()
+                    });
+                }else{
+                    layer.msg(result.msg, {time: 2000, icon:2,offset: '20px',anim: 6},function(){
+                        layer.closeAll();
+                    });
+                }
+
+            },
+            error:function(){
+                layer.msg('数据不正确或未知错误', {time: 2000, icon:2,offset: '20px',anim: 6});
+            },
+            url: "{% url 'add_address' %}"
+        });
+        return false;
+      });
+
+
+    //设置默认地址
+    $('.info').click(function(){
+        var sid = $(this).attr('sid'),
+        self = $(this);
+        $.get('{% url 'set_address' %}',{sid:sid},function(res){
+            layer.msg(res.msg, {time: 2000, icon:6,offset: '20px',anim: 6});
+            $('#aid').val(sid);
+            self.parents('.col-4').find('.item').addClass('active').end().siblings().find('.set_default').removeClass('active');
+        })
+    })
+
+
+    //判断是否选择默认地址
+    $('.go-charge').on('click',function(){
+        if($('.set_default').length>0){
+            $('.set_default').each(function(){
+                if(!$('div.set_default').hasClass("active")){
+                    layer.msg('请选择默认地址', {time: 2000, icon:2,offset: '20px',anim: 6});
+                    return false;
+                }
+            })
+            var sid = $('.col-4 .active .info').attr('sid')
+            $('#aid').val(sid)
+        }else{
+            layer.msg('请添加默认地址', {time: 2000, icon:2,offset: '20px',anim: 6});
+            return false;
+        }
+    })
+
+
+})
+</script>
+<script>
+//三级联动地址
+var defaults = {
+    s1: 'provid',
+    s2: 'cityid',
+    s3: 'areaid',
+    v1: null,
+    v2: null,
+    v3: null
+};
+//计算金额
+var tprice = 0
+$('.smltotal').each(function(){
+    tprice += parseFloat($(this).text())
+})
+$('.item strong,.totalprice').html('¥ '+tprice.toFixed(2))
+
+//添加地址
+<!--$('.confirm-address .edit,.confirm-address .add').on('click',function () {-->
+    <!--layer.open({-->
+        <!--type: 1,-->
+        <!--skin: 'layui-layer-seaing',-->
+        <!--title: '会员收货地址',-->
+        <!--area: ['800px', 'auto'],-->
+        <!--content: $('#addressform')-->
+        <!--//btn: ['按钮一', '按钮二']-->
+    <!--});-->
+<!--});-->
+<!--$(document.body).on('click','.layer-address .cancle',function () {-->
+    <!--layer.closeAll();-->
+    <!--return false;-->
+<!--})-->
+//
+function juggeAddressNum () {
+    var col=$('.confirm-address .col'),
+    cH=col.height();
+    $('.confirm-address').height(cH)
+    if (col.length>3) {
+        $('.confirm-address-bar').show();
+    }
+    else {
+        $('.confirm-address-bar').hide();
+    }
+}
+juggeAddressNum();
+zAction.add({
+    'drop':function () {
+        $('.confirm-address').height('auto')
+        var h=$('.confirm-address').height()
+        juggeAddressNum();
+        $('.confirm-address').animate({height: h}, 300);
+        $(this).parent().remove();
+    }
+});
+</script>
+{% endblock %}

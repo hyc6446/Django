@@ -1,0 +1,135 @@
+{% extends 'back/public/basetop.html' %}
+
+{% block title %}修改订单状态{% endblock %}
+{% block mycss %}
+<link rel="stylesheet" href="/static/back/css/weadmin.css">
+<link rel="stylesheet" href="/static/back/css/style.css">
+{% endblock %}
+
+{% block currpath %}修改订单状态{% endblock %}
+{% block contains%}
+<div class="weadmin-body">
+  <!---信息区域Start-->
+    <form class="layui-form" action="" lay-filter="editgoods" id="addform">
+
+        <div class="layui-row" class="layui-form layui-form-pane">
+            <div class="layui-col-xs12">
+                <div class="layui-form-item" pane>
+                    <label class="layui-form-label">订单状态</label>
+                    <div class="layui-input-block">
+                        {% if data.o_status == 0 %}
+                        <input type="radio" name="status" value="0" title="已取消" >
+                        {% elif data.o_status == 1 %}
+                        <input type="radio" name="status" value="1" title="已下单" disabled>
+                        <input type="radio" name="status" value="2" title="未发货" >
+                        <input type="radio" name="status" value="3" title="已发货" >
+                        <input type="radio" name="status" value="4" title="订单完成" >
+                        {% elif data.o_status == 2 %}
+                        <input type="radio" name="status" value="2" title="未发货" disabled>
+                        <input type="radio" name="status" value="3" title="已发货" >
+                        <input type="radio" name="status" value="4" title="订单完成" >
+                        {% elif data.o_status == 3 %}
+                        <input type="radio" name="status" value="3" title="已发货" disabled>
+                        <input type="radio" name="status" value="4" title="订单完成" >
+                        {% elif data.o_status == 4 %}
+                        <input type="radio" name="status" value="4" title="订单完成" >
+                        {% endif %}
+                    </div>
+                </div>
+            </div><br/> <br/><br/> <br/><br/> <br/>
+            <div class="layui-col-xs6 layui-col-xs-offset5">
+                <div class="layui-form-item">
+                    <div class="layui-input-inline">
+
+                      <input type="hidden" name="id" value="{{ data.id}}">
+                        {% if data.o_status == 0 or data.o_status == 4 %}
+                      <button class="layui-btn layui-btn-disabled" lay-submit="" lay-filter="editgoods" disabled>修改状态</button>
+                        {% else %}
+                      <button class="layui-btn" lay-submit="" lay-filter="editorder" >修改状态</button>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </form>
+  <!---信息区域End-->
+</div>
+
+{% endblock %}
+
+{% block setjs %}
+<script>
+layui.extend({
+	admin: '{/}/static/back/js/admin'
+});
+layui.use(['jquery','form','element','upload','layer','layedit'], function() {
+	var $ = layui.jquery,
+	    layer = layui.layer,
+		element = layui.element,
+		form = layui.form;
+    var index = parent.layer.getFrameIndex(window.name); //得到当前iframe层的索引
+    //表单初始赋值
+    form.val('editgoods', {
+        "status": "{{ data.o_status }}"
+    })
+
+    //提交
+    form.on('submit(editorder)',function(data){
+        var id = $('input[name=id]').val(),
+            status = $('input[name=status]:checked').val()
+        //console.log(id,status)
+        //提交数据
+        $.ajax({
+            async: false,
+            data:{'id':id,'status':status},
+            type:'POST',
+            dataType: 'json',
+            success: function(result) {
+            console.log(result)
+                parent.layer.close(index);
+                if (result.code == 1) {
+                    parent.layer.msg(result.msg, {time: 2000, icon:6,offset: '20px',anim: 6});
+                    parent.location.reload()
+                }else{
+                    parent.layer.msg(result.msg, {time: 2000, icon:2,offset: '20px',anim: 6});
+                }
+            },
+            error:function(){
+                layer.msg('数据不正确或未知错误', {time: 2000, icon:2,offset: '20px',anim: 6});
+
+            },
+            url: "{% url 'order_edit' %}"
+        });
+        return false;
+      });
+
+
+});
+
+//图片展示示例
+
+
+</script>
+{% endblock %}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

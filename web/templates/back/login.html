@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<title>商城后台登录</title>
+<link rel="shortcut icon" href="http://www.17sucai.com/preview/66735/2018-04-25/whycupapp/img/favicon.ico" type="image/x-icon">
+<link rel="stylesheet" href="/static/layui/css/layui.css">
+<link rel="stylesheet" href="/static/back/css/login.css">
+<body>
+    <div class="layui-carousel video_mask" id="login_carousel" lay-anim="fade" lay-indicator="none" lay-arrow="none" style="width: 100%; height: 100%;">
+        <div carousel-item="">
+            <div class="carousel_div1 layui-this"></div>
+            <div class="carousel_div2"></div>
+            <div class="carousel_div3"></div>
+            <div class="carousel_div4"></div>
+            <div class="carousel_div5"></div>
+        </div>
+        <div class="login layui-anim layui-anim-up">
+            <fieldset class="layui-elem-field layui-field-title">
+                <legend class="text-white">商城后台管理</legend>
+            </fieldset>
+            <div class="layui-form" action="" method="post">
+                <div class="layui-form-item">
+                    <input type="text" id="account" name="username" lay-verify="required|account" maxlength="20" placeholder="请输入管理员帐号" autocomplete="off" autofocus="autofocus" class="layui-input">
+                </div>
+                <div class="layui-form-item">
+                    <input type="password" id="password" name="password" lay-verify="required" maxlength="20" placeholder="请输入密码" autocomplete="off" class="layui-input">
+                </div>
+                <!--<div class="layui-form-item form_code">-->
+                    <!--<input type="text" id="code" lay-verify="required|code" maxlength="6" placeholder="请输入验证码" autocomplete="off" class="layui-input">-->
+                    <!--<div class="code"><img id="refCode_login_img" width="118" height="38"></div>-->
+                <!--</div>-->
+
+                <button class="login_btn layui-btn layui-btn-radius layui-btn-normal" lay-submit="" lay-filter="login">登录</button>
+            </div>
+
+        </div>
+    </div>
+
+<script src="/static/layui/layui.js" charset="utf-8"></script>
+<script type="text/javascript" src="/static/back/js/login.js"></script>
+
+</body>
+</html>

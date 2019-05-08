@@ -1,0 +1,123 @@
+{% extends 'back/public/basetop.html' %}
+
+{% block title %}品牌详细信息{% endblock %}
+{% block mycss %}
+<link rel="stylesheet" href="/static/back/css/weadmin.css">
+<link rel="stylesheet" href="/static/back/css/style.css">
+{% endblock %}
+
+{% block currpath %}品牌详细信息{% endblock %}
+{% block contains%}
+<div class="weadmin-body">
+  <!---信息区域Start-->
+    <form class="layui-form" lay-filter="brand_info">
+        <div class="layui-row layui-form-pane">
+            <div class="layui-col-xs12">
+                <div class="layui-form-item">
+                    <label class="layui-form-label">品牌名称</label>
+                    <div class="layui-input-block">
+                        <input type="text" class="layui-input" name="b_name" disabled="">
+                    </div>
+                </div>
+            </div>
+            <div class="layui-col-xs12">
+                <div class="layui-form-item">
+                    <label class="layui-form-label">品牌简介</label>
+                    <div class="layui-input-block">
+                        <input type="text" name="b_intro" class="layui-input" disabled="" />
+                    </div>
+                </div>
+            </div>
+            <div class="layui-col-xs12">
+                <div class="layui-form-item">
+                    <label class="layui-form-label">所属分类</label>
+                    <div class="layui-input-block">
+                      <select name="p_tid" disabled="">
+                        <option value="">请选择所属分类</option>
+                          {% for v in types %}
+                        <option value="{{ v.id }}">{{ v.t_name }}</option>
+                          {% empty %}
+                        <option value="">请选择所属分类</option>
+                          {% endfor %}
+                      </select>
+
+                    </div>
+                </div>
+            </div>
+            <div class="layui-col-xs12">
+                <div class="layui-form-item">
+                    <label class="layui-form-label">是否启用</label>
+                    <div class="layui-input-block">
+                      <input type="radio" name="b_isdel" value="启用" title="启用" {% if data.b_isdel == '启用' %} checked{% else %} disabled {% endif %} />
+                      <input type="radio" name="b_isdel" value="禁用" title="禁用" {% if data.b_isdel == '禁用' %} checked{% else %} disabled {% endif %} >
+                    </div>
+                </div>
+            </div>
+            <div class="layui-col-xs12">
+                <div class="layui-form-item">
+                    <label class="layui-form-label">Logo展示</label>
+                    <div class="layui-input-block">
+                        &nbsp;&nbsp;<img src="{{ data.b_logo }}" alt="{{ data.name }}" title="{{ data.name }}">
+                    </div>
+                </div>
+            </div>
+            <div class="layui-col-xs12">
+                <div class="layui-form-item">
+                    <label class="layui-form-label">添加时间</label>
+                    <div class="layui-input-block">
+                        <input type="text" class="layui-input title" name="b_addtime" value="" disabled="">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+  <!---会员信息区域End-->
+</div>
+
+{% endblock %}
+
+{% block setjs %}
+<script>
+layui.extend({
+	admin: '{/}/static/back/js/admin'
+});
+layui.use(['jquery','form','layer'], function() {
+	var $ = layui.jquery,
+	    layer = layui.layer,
+		form = layui.form;
+
+     //表单初始赋值
+      form.val('brand_info', {
+        "b_name": "{{ data.b_name }}"
+        ,"b_intro": "{{ data.b_intro }}"
+        ,"p_tid": {{ data.t_id }}
+        ,"b_isdel": "{{ data.b_isdel }}"
+        ,"b_addtime":"{{ data.b_addtime | date:'Y-m-d H:i:s' }}"
+      })
+
+    });
+
+
+</script>
+{% endblock %}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

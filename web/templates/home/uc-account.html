@@ -1,0 +1,196 @@
+{% extends 'home/public/memberbase.html'%}
+
+<!--网页标题-->
+{% block title %}个人信息{% endblock %}
+
+<!--面包屑导航当前路径-->
+{% block currpath %}个人信息{% endblock %}
+<!--内容区域-->
+{% block container %}
+
+<div class="uc-content">
+    <div class="uc-panel">
+        <div class="uc-bigtit">个人信息</div>
+        <div class="uc-panel-bd">
+
+                <div class="account-info clearfix">
+                  <div class="layui-row">
+                    <div class="layui-col-xs2">
+                        <div class="col-headpic">
+                            <form action="" method="post" enctype="multipart/form-data" id="layui-upload-block">
+                                {% csrf_token %}
+                            <div class="layui-upload">
+                              <div class="layui-upload-list">
+                                <img class="layui-upload-img" id="showpic" src="{{ data.u_pic }}">
+                                <p id="demoText"></p>
+                              </div>
+                              <button type="button" class="layui-btn" id="uppic">上传图片</button>
+                            </div>
+                            </form>
+                        </div>
+                    </div>
+                    <form method="post" class="layui-form" id="formarea">
+                    {% csrf_token %}
+                    <div class="layui-col-xs10">
+                      <div class="layui-form-item">
+                        <label class="layui-form-label">真实姓名</label>
+                        <div class="layui-input-inline">
+                          <input type="text" name="truename" lay-verify="required|truename" autocomplete="off" placeholder="请输入真实姓名" value="{{ data.truename }}" class="layui-input">
+                        </div>
+                      </div>
+                      <div class="layui-form-item">
+                        <label class="layui-form-label">性别</label>
+                        <div class="layui-input-block">
+                          <input type="radio" name="sex" value="男" title="男" {% if data.sex == '男' %}checked{% else %}{% endif %} />
+                          <input type="radio" name="sex" value="女" title="女" {% if data.sex == '女' %}checked{% else %}{% endif %} />
+                        </div>
+                      </div>
+                      <div class="layui-form-item">
+                        <label class="layui-form-label">年龄</label>
+                        <div class="layui-input-inline">
+                          <input type="text" name="age" lay-verify="age" autocomplete="off" placeholder="请输入年龄" value="{{ data.age }}" class="layui-input">
+                        </div>
+                      </div>
+                      <div class="layui-form-item">
+                        <label class="layui-form-label">联系方式</label>
+                        <div class="layui-input-inline">
+                          <input type="text" name="phone" lay-verify="required|phone" autocomplete="off" placeholder="请输入联系方式" value="{{ data.u_phone }}" class="layui-input">
+                        </div>
+                      </div>
+                      <div class="layui-form-item">
+                        <label class="layui-form-label">个人地址</label>
+                        <div class="layui-input-inline">
+                            <select name="province" lay-filter="province" class="province">
+                                <option value="">请选择省</option>
+                            </select>
+                        </div>
+                        <div class="layui-input-inline">
+                            <select name="city" lay-filter="city" disabled>
+                                <option value="">请选择市</option>
+                            </select>
+                        </div>
+                        <div class="layui-input-inline">
+                            <select name="area" lay-filter="area" disabled>
+                                <option value="">请选择县/区</option>
+                            </select>
+                        </div>
+                      </div>
+                      <div class="layui-form-item">
+                        <label class="layui-form-label">邮箱</label>
+                        <div class="layui-input-block">
+                           <div class="layui-form-mid layui-word-aux">{{ data.u_email }}&nbsp;&nbsp;</div>
+                          <div class="text-black">
+                            {% if data.u_email %}
+                            <button class="layui-btn layui-btn-warm layui-btn-sm">修改</button>
+                            {% else %}
+                            <button class="layui-btn layui-btn-danger layui-btn-sm">添加</button>
+                            {% endif %}
+                            </div>
+                        </div>
+                      </div>
+                      <div class="layui-form-item layui-form-text">
+                        <label class="layui-form-label">个人简介</label>
+                        <div class="layui-input-block">
+                          <textarea placeholder="请输入个人简介" name="intro" class="layui-textarea">{{ data.u_intro }}</textarea>
+                        </div>
+                      </div>
+                      <div class="control-submit">
+                            <input type="hidden" value="{{ data.id }}" name="uid">
+                            <input class="ui-btn-theme submit" type="button" lay-submit="" lay-filter="subbtn" value="确认" />
+                        </div>
+                    </div>
+                    </form>
+
+                  </div>
+
+                </div>
+
+        </div>
+    </div>
+</div>
+
+{% endblock %}
+
+{% block setjs %}
+<script>
+    layui.config({
+        base : "{/}/st<blockquote class="layui-elem-quote layui-text">
+  鉴于小伙伴的普遍反馈，先温馨提醒两个常见“问题”：1. <a href="/doc/base/faq.html#form" target="_blank">为什么select/checkbox/radio没显示？</a> 2. <a href="/doc/modules/form.html#render" target="_blank">动态添加的表单元素如何更新？</a>
+</blockquote>atic/back/js/"
+    }).extend({
+        "address" : "address"
+    })
+
+    layui.use(['form', 'jquery','element','address','upload'], function() {
+        var address = layui.address(),
+	    form = layui.form,
+	    layer = layui.layer,
+		$ = layui.jquery,
+		upload = layui.upload,
+        element = layui.element;
+
+        //自定义验证规则
+        form.verify({
+            truename: function(value){
+              if(value.length < 0){
+                return '请填写真实姓名';
+              }
+            }
+        });
+
+        //头像上传
+        var uploadInst = upload.render({
+            elem: '#uppic'
+            ,url: '{% url 'uc_buddha' %}'
+            ,before: function(obj){
+              //预读本地文件示例，不支持ie8
+              obj.preview(function(index, file, result){
+                $('#showpic').attr('src', result); //图片链接（base64）
+              });
+            }
+            ,data:{'id':{{ data.id }}}
+            ,done: function(res){
+              //如果上传失败
+              if(res.code > 0){
+                return layer.msg('上传失败');
+              }
+              return layer.msg('上传成功');
+            }
+            ,error: function(){
+              //演示失败状态，并实现重传
+              var demoText = $('#demoText');
+              demoText.html('<span style="color: #FF5722;">上传失败</span> <a class="layui-btn layui-btn-xs demo-reload">重试</a>');
+              demoText.find('.demo-reload').on('click', function(){
+                uploadInst.upload();
+              });
+            }
+        });
+
+
+
+        //监听提交
+        form.on('submit(subbtn)',function(data){
+            $.ajax({
+                type: "POST",
+                dataType: "json",
+                url: "{% url 'uc_account' %}" ,//url
+                data: $('#formarea').serialize(),
+                success: function (result) {
+                    console.log(result);
+                    if (result.code == 1) {
+                        layer.msg('修改成功', {time: 1000, icon:6,offset: '20px',anim: 6});
+                    };
+                },
+                error : function() {
+                    layer.msg('修改失败', {time: 1000, icon:5,offset: '20px',anim: 6});
+                }
+            });
+        });
+
+
+    });
+</script>
+
+
+{% endblock %}
+

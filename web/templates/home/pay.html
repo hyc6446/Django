@@ -1,0 +1,137 @@
+{% extends 'home/public/cartbase.html' %}
+
+{% block title %}购物车列表页面{% endblock %}
+
+{% block mystyle %}
+
+{% endblock %}
+
+<!-- 网页内容区域开始-->
+{% block containes %}
+        <div class="cart-header wrapper">
+            <div class="logo">
+                <a href="index.html"><img src="/static/home/img/logo.png" alt="logo" /></a>
+            </div>
+            <div class="step-box">
+                <div class="row">
+                    <div class="step first active col-3">
+                        <span class="num">1</span><span class="line"></span><span class="label">我的购物车</span>
+                    </div>
+                    <div class="step active col-3">
+                        <span class="num">2</span><span class="line"></span><span class="label">确认订单信息</span>
+                    </div>
+                    <div class="step active col-3">
+                        <span class="num">3</span><span class="line"></span><span class="label">选择支付方式</span>
+                    </div>
+                    <div class="step last col-3">
+                        <span class="num">4</span><span class="line"></span><span class="label">完成付款</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    <!--头部-->
+
+    <div class="wrapper">
+        <div class="pay-wrap">
+            <div class="order-result">
+                <div class="section clearfix">
+                    <img src="/static/home/img/ico/order-success.jpg" class="ico" />
+                    <div class="titbox">
+                        <div class="tit">订单提交成功，应付金额 {{ data.o_totalprice }} 元</div>
+                        <div class="stit">订单号：{{ data.o_totalnum }}    请您在 1 日 内完成支付，否则订单会被自动取消</div>
+                    </div>
+                    <div class="mt20">
+                        <div class="meta">
+                            <div class="hd">商品</div>
+                            {% for v in goods %}
+                            <div class="bd">{{ v.name }} * {{ v.num }}</div>
+                            {% endfor %}
+                        </div>
+                        <div class="meta">
+                            <div class="hd">收货地址</div>
+                            <div class="bd">{{ address.u_address }}  ({{ address.u_name }} 收) {{ address.u_iphone }} </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="pay-wrap-tit">
+            在线支付
+        </div>
+        <div class="pay-wrap">
+            <div class="pay-way">
+                <div class="row">
+                    <div class="col col-3">
+                        <label><input class="check" type="radio" name="a" /><img src="/static/home/img/pay/zfb.jpg" /></label>
+                    </div>
+                    <div class="col col-3">
+                        <label><input class="check" type="radio" name="a" /><img src="/static/home/img/pay/weixin.jpg" /></label>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col col-3">
+                        <label><input class="check" type="radio" name="a" /><img class="bd" src="/static/home/img/pay/zgyh.jpg" /></label>
+                    </div>
+                    <div class="col col-3">
+                        <label><input class="check" type="radio" name="a" /><img class="bd" src="/static/home/img/pay/jsyh.jpg" /></label>
+                    </div>
+                    <div class="col col-3">
+                        <label><input class="check" type="radio" name="a" /><img class="bd" src="/static/home/img/pay/nyyh.jpg" /></label>
+                    </div>
+                    <div class="col col-3">
+                        <label><input class="check" type="radio" name="a" /><img class="bd" src="/static/home/img/pay/gsyh.jpg" /></label>
+                    </div>
+                    <div class="col col-3">
+                        <label><input class="check" type="radio" name="a" /><img class="bd" src="/static/home/img/pay/jtyh.jpg" /></label>
+                    </div>
+                    <div class="col col-3">
+                        <label><input class="check" type="radio" name="a" /><img class="bd" src="/static/home/img/pay/zsyh.jpg" /></label>
+                    </div>
+                    <div class="col col-3">
+                        <label><input class="check" type="radio" name="a" /><img class="bd" src="/static/home/img/pay/yzcxyh.jpg" /></label>
+                    </div>
+                    <div class="col col-3">
+                        <label><input class="check" type="radio" name="a" /><img class="bd" src="/static/home/img/pay/xyyy.jpg" /></label>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="bottom-panel">
+            <a href="" class="go-next ui-btn-theme">下一步</a>
+        </div>
+    </div>
+
+{% endblock %}
+<!-- 网页内容区域结束-->
+{% block myjs %}
+
+<script>
+    $('.check').iCheck({
+            radioClass: 'sty1-radio'
+    });
+
+    <!--//防止页面刷新-->
+    <!--$("body").bind("contextmenu", function(event) {-->
+            <!--return false;-->
+    <!--});-->
+    <!--$(document).keydown(function(event){-->
+        <!--if ((event.altKey)&&-->
+          <!--((event.keyCode==37)||   //屏蔽 Alt+ 方向键 ←-->
+           <!--(event.keyCode==39)))   //屏蔽 Alt+ 方向键 →-->
+       <!--{-->
+           <!--event.returnValue=false;-->
+           <!--return false;-->
+       <!--}-->
+        <!--if(event.keyCode==8){-->
+            <!--return false; //屏蔽退格删除键-->
+        <!--}-->
+        <!--if(event.keyCode==116){-->
+            <!--return false; //屏蔽F5刷新键-->
+        <!--}-->
+        <!--&lt;!&ndash;if((event.ctrlKey) && (event.keyCode==82)){&ndash;&gt;-->
+            <!--&lt;!&ndash;return false; //屏蔽alt+R&ndash;&gt;-->
+        <!--&lt;!&ndash;}&ndash;&gt;-->
+    <!--});-->
+
+</script>
+{% endblock %}

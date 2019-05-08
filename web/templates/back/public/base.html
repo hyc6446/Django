@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <title>{% block title %}{% endblock %}</title>
+
+    <link rel="stylesheet" href="/static/back/css/font.css">
+    <link rel="stylesheet" href="/static/layui/css/layui.css">
+    <link href="//netdna.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+
+    {% block mycss %}{% endblock %}
+    <script src="/static/layui/layui.js" charset="utf-8"></script>
+    <style>
+      .layui-body{overflow-y: scroll;}
+    </style>
+
+</head>
+<body class="layui-layout-body">
+<div class="layui-layout layui-layout-admin">
+  <div class="layui-header">
+    <div class="layui-logo">商城管理后台</div>
+    <!-- 头部区域（可配合layui已有的水平导航） -->
+    <ul class="layui-nav layui-layout-left">
+      <li class="layui-nav-item"><a href="">控制台</a></li>
+      <li class="layui-nav-item"><a href="">商品管理</a></li>
+      <li class="layui-nav-item"><a href="">用户</a></li>
+      <li class="layui-nav-item">
+        <a href="javascript:;">其它系统</a>
+        <dl class="layui-nav-child">
+          <dd><a href="">邮件管理</a></dd>
+          <dd><a href="">消息管理</a></dd>
+        </dl>
+      </li>
+    </ul>
+    <ul class="layui-nav layui-layout-right">
+
+      {% if request.user %}
+      <li class="layui-nav-item">
+        <a href="javascript:;">
+          <img src="{{ request.user.authuserinfo.user_icon }}" class="layui-nav-img">
+          {{ user.username }}
+        </a>
+        <dl class="layui-nav-child">
+          <dd><a href="">基本资料</a></dd>
+          <dd><a href="">安全设置</a></dd>
+        </dl>
+      </li>
+      <li class="layui-nav-item"><a href="{% url 'back_logout' %}">退了</a></li>
+      {% endif %}
+    </ul>
+  </div>
+  <div class="layui-side layui-bg-black">
+    <div class="layui-side-scroll">
+      <!-- 左侧导航区域（可配合layui已有的垂直导航） -->
+      <ul class="layui-nav layui-nav-tree"  lay-filter="test" lay-shrink="all">
+        <li class="layui-nav-item"><a href="{% url 'back' %}">后台首页</a></li>
+        <li class="layui-nav-item layui-nav-itemed">
+          <a class="" href="javascript:;"><i class="layui-icon layui-icon-user" style="font-size: 20px; color: #fff;"></i> 会员管理</a>
+          <dl class="layui-nav-child">
+            <dd><a href="{% url 'userlist' %}">会员列表</a></dd>
+          </dl>
+        </li>
+        <li class="layui-nav-item">
+          <a href="javascript:;">商品类别管理</a>
+          <dl class="layui-nav-child">
+            <dd><a href="{% url 'typelist' %}">类别列表</a></dd>
+          </dl>
+        </li>
+        <li class="layui-nav-item">
+          <a href="javascript:;">品牌管理</a>
+          <dl class="layui-nav-child">
+            <dd><a href="{% url 'brand_list' %}">品牌列表</a></dd>
+            <dd><a href="{% url 'brand_add'%}">品牌添加</a></dd>
+          </dl>
+        </li>
+        <li class="layui-nav-item">
+          <a href="javascript:;">商品属性管理</a>
+          <dl class="layui-nav-child">
+            <dd><a href="{% url 'goods_trait_list' %}">属性列表</a></dd>
+          </dl>
+        </li>
+        <li class="layui-nav-item">
+          <a href="javascript:;">商品管理</a>
+          <dl class="layui-nav-child">
+            <dd><a href="{% url 'goodslist' %}">商品列表</a></dd>
+            <dd><a href="{% url 'goodsadd' %}">商品添加</a></dd>
+            <dd><a href="{% url 'goodstrash' %}">回收站</a></dd>
+          </dl>
+        </li>
+
+        <li class="layui-nav-item">
+          <a href="javascript:;">订单管理</a>
+          <dl class="layui-nav-child">
+            <dd><a href="{% url 'order_list' %}">订单列表</a></dd>
+          </dl>
+        </li>
+        <li class="layui-nav-item">
+          <a href="javascript:;">商家活动</a>
+          <dl class="layui-nav-child">
+            <dd><a href="javascript:;">活动列表</a></dd>
+            <dd><a href="javascript:;">活动添加</a></dd>
+          </dl>
+        </li>
+        <li class="layui-nav-item">
+          <a href="javascript:;">广告管理</a>
+          <dl class="layui-nav-child">
+            <dd><a href="javascript:;">广告列表</a></dd>
+            <dd><a href="javascript:;">广告位置</a></dd>
+          </dl>
+        </li>
+        <li class="layui-nav-item">
+          <a href="javascript:;">权限管理</a>
+          <dl class="layui-nav-child">
+            <dd><a href="{% url 'auth_list' %}">管理员列表</a></dd>
+            <dd><a href="javascript:;">审核申请</a></dd>
+          </dl>
+        </li>
+
+        <li class="layui-nav-item"><a href="">网站设置</a></li>
+        <li class="layui-nav-item"><a href="">数据备份</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="layui-body">
+    <!-- 内容主体区域 -->
+    <div style="padding: 15px;">
+        <div class="weadmin-nav">
+            <span class="layui-breadcrumb">
+                <a href="{% url 'back' %}">首页</a>
+                <a><cite>{% block currpath %}{% endblock %}</cite></a>
+             </span>
+            <a class="layui-btn layui-btn-sm" style="line-height:1.6em;margin-top:3px;float:right" href="javascript:location.replace(location.href);" title="刷新">
+                <i class="layui-icon" style="line-height:30px">&#x1002;</i></a>
+        </div>
+       {% block contains%}
+
+       {% endblock %}
+    </div>
+  </div>
+
+  <div class="layui-footer"></div>
+</div>
+{% block setjs %}
+<script>
+layui.extend({
+	admin: '{/}/static/back/js/admin'
+});
+layui.use(['admin'], function() {})
+</script>
+
+{% endblock %}
+
+<div id='prevModal'>
+    <img id='img_prev'/>
+</div>
+</body>
+</html>

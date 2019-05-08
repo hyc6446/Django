@@ -1,0 +1,455 @@
+{% extends 'back/public/basetop.html' %}
+
+{% block title %}会员信息{% endblock %}
+{% block mycss %}
+<link rel="stylesheet" href="/static/back/css/weadmin.css">
+<link rel="stylesheet" href="/static/back/css/style.css">
+<style>
+.layui-upload-img{margin-left:5px; margin-top:5px; height:80px;}
+#prevModal {width:100%; height:100%; text-align:center; display:none;}
+#prevModal img{height:500px;}
+</style>
+{% endblock %}
+
+{% block currpath %}会员信息{% endblock %}
+{% block contains%}
+<div class="weadmin-body">
+  <!---信息区域Start-->
+    <form class="layui-form" action="" lay-filter="editgoods" id="addform">
+
+        <div class="layui-row" class="layui-form layui-form-pane">
+            <div class="layui-col-xs12 layui-col-sm12 layui-col-md12">
+                <div class="layui-form-item">
+                    <label class="layui-form-label"><i style="color:red;">*</i>&nbsp;商品名称</label>
+                    <div class="layui-input-block">
+                        <input type="text" class="layui-input" name="g_name" value="" lay-verify="required|title" autocomplete="off" placeholder="请输入商品名称" >
+                    </div>
+                </div>
+            </div>
+            <div class="layui-col-xs12 layui-col-sm12 layui-col-md12">
+                <div class="layui-form-item">
+                    <label class="layui-form-label">商品标题</label>
+                    <div class="layui-input-block">
+                        <input type="text" class="layui-input" name="g_title" value="">
+                    </div>
+                </div>
+            </div>
+            <div class="layui-col-xs12 layui-col-sm6 layui-col-md4 layui-col-lg3">
+                <div class="layui-form-item">
+                    <label class="layui-form-label"><i style="color:red;">*</i>&nbsp;商品价格</label>
+                    <div class="layui-input-block">
+                        <input type="text" class="layui-input" name="g_price" value="" lay-verify="required|number" autocomplete="off" placeholder="请输入商品价格" >
+                    </div>
+                </div>
+            </div>
+            <div class="layui-col-xs12 layui-col-sm6 layui-col-md4 layui-col-lg3">
+                <div class="layui-form-item">
+                    <label class="layui-form-label"><i style="color:red;">*</i>&nbsp;商品折扣</label>
+                    <div class="layui-input-block">
+                        <input type="text" class="layui-input" name="g_saleprice" value="" lay-verify="required|saleprice" autocomplete="off" placeholder="请输入商品折扣" >
+                    </div>
+                </div>
+            </div>
+            <div class="layui-col-xs12 layui-col-sm6 layui-col-md4 layui-col-lg3">
+                <div class="layui-form-item">
+                    <label class="layui-form-label">商品总量</label>
+                    <div class="layui-input-block">
+                        <input type="text" class="layui-input" name="g_nums" value="">
+                    </div>
+                </div>
+            </div>
+            <div class="layui-col-xs12 layui-col-sm6 layui-col-md4 layui-col-lg3">
+                <div class="layui-form-item">
+                    <label class="layui-form-label"><i style="color:red;">*</i>&nbsp;商品类型</label>
+                    <div class="layui-input-block">
+                          <select name="g_type" lay-verify="required">
+                            <option value="">请选择商品类型</option>
+                            <option value="0">普通</option>
+                            <option value="1">新品</option>
+                            <option value="2">热卖</option>
+                          </select>
+                    </div>
+                </div>
+            </div>
+            <div class="layui-col-xs12 layui-col-sm6 layui-col-md4 layui-col-lg3">
+                <div class="layui-form-item">
+                    <label class="layui-form-label">商品颜色</label>
+                    <div class="layui-input-block">
+                      <select name="i_color">
+                        <option value="">请选择商品颜色</option>
+                          {% for v in color %}
+                        <option value="{{ v.a_name }}">{{ v.a_name }}</option>
+                          {% empty %}
+                        <option value="">请选择商品颜色</option>
+                          {% endfor %}
+                      </select>
+                    </div>
+                </div>
+            </div>
+            <div class="layui-col-xs12 layui-col-sm6 layui-col-md4 layui-col-lg3">
+                <div class="layui-form-item">
+                    <label class="layui-form-label">商品尺寸</label>
+                    <div class="layui-input-block">
+                      <select name="i_size">
+                        <option value="">请选择商品尺寸</option>
+                          {% for v in size %}
+                        <option value="{{ v.a_name }}">{{ v.a_name }}</option>
+                          {% empty %}
+                        <option value="">请选择商品尺寸</option>
+                          {% endfor %}
+                      </select>
+                    </div>
+                </div>
+            </div>
+            <div class="layui-col-xs12 layui-col-sm6 layui-col-md4 layui-col-lg3">
+                <div class="layui-form-item">
+                    <label class="layui-form-label">商品品牌</label>
+                    <div class="layui-input-block">
+                      <select name="i_pinpai">
+                        <option value="">请选择商品属性</option>
+                        <option value="华为">华为</option>
+                        <option value="小米">小米</option>
+                        <option value="OPPO">OPPO</option>
+                        <option value="VIVO">VIVO</option>
+                        <option value="苹果">苹果</option>
+                      </select>
+                    </div>
+                </div>
+            </div>
+            <div class="layui-col-xs12">
+                <div class="layui-col-xs12 layui-col-sm6 layui-col-md6">
+                    <div class="layui-form-item">
+                        <label class="layui-form-label"><i style="color:red;">*</i>&nbsp;所属分类</label>
+                        <div class="layui-input-block">
+                          <select name="g_tid" lay-verify="required">
+                            {% for v in types %}
+                            <option value="{{ v.id }}">{{ v.t_name}}</option>
+                            {% empty %}
+                            <option value=""></option>
+                            {% endfor %}
+                          </select>
+                        </div>
+                    </div>
+                </div>
+                <div class="layui-col-xs12 layui-col-sm6 layui-col-md3">
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">是否包邮</label>
+                        <div class="layui-input-block">
+                          <input type="radio" name="g_mall" value="包邮" title="包邮"  >
+                          <input type="radio" name="g_mall" value="不包邮" title="不包邮"  >
+                        </div>
+                    </div>
+                </div>
+                <div class="layui-col-xs12 layui-col-sm6 layui-col-md3">
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">是否售卖</label>
+                        <div class="layui-input-block">
+                          <input type="radio" name="g_isdel" value="1" title="售卖" >
+                          <input type="radio" name="g_isdel" value="0" title="下架"  >
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+            <div class="layui-col-xs12">
+              <div class="layui-form-item">
+                <label class="layui-form-label"><i style="color:red;">*</i>&nbsp;商品产地</label>
+                <div class="layui-input-inline">
+                    <select name="provid" id="provid" lay-filter="provid"  lay-verify="required"></select>
+                </div>
+                <div class="layui-input-inline">
+                    <select name="cityid" id="cityid" lay-filter="cityid"></select>
+                </div>
+                <div class="layui-input-inline">
+                    <select name="areaid" id="areaid" lay-filter="areaid"></select>
+                </div>
+                  <div class="layui-form-mid layui-word-aux"><span style="color:red">请选择商品产地(默认地址为北京)</span></div>
+              </div>
+            </div>
+
+            <div class="layui-col-xs12">
+                <div class="layui-form-item goods_pic">
+                    <label class="layui-form-label">商品展示</label>
+                    <div class="layui-input-block">
+                            {% for v in data.pictures_set.all reversed  %}
+                                {% if v.p_isdel == 1 %}
+                                    {% if forloop.counter < 6 %}
+                                        <div class="layui-col-xs6 layui-col-sm3 layui-col-md1 showgoods">
+                                            <img src="{{ v.p_pic }}" alt="{{ v.p_name }}" title="选中设为主图" width="80" height="80" />
+                                            <a class="close" href="javascript:void(0)" pid="{{ v.id }}"><i class="fa fa-close" aria-hidden="true"></i></a><br/>
+                                            <input type="radio" name="p_cover" value="{{ v.id }}" {% if v.p_cover == 1 %} checked {% endif %} />
+                                        </div>
+                                    {% endif %}
+                                {% endif %}
+                            {% empty %}
+                                <div style="line-height:90px;">暂无商品图片！</div>
+                            {% endfor %}
+
+                    </div>
+                </div>
+            </div>
+            <div class="layui-col-xs12">
+                <div class="layui-form-item">
+                    <label class="layui-form-label">商品图片</label>
+                    <div class="layui-input-block">
+                        <div class="layui-upload">
+                            <button type="button" class="layui-btn" id="upgoods">上传商品图片</button>
+                            <blockquote class="layui-elem-quote layui-quote-nm" style="margin-top: 10px;">预览图：
+                                <div class="layui-upload-list" id="showpic"></div>
+                            </blockquote>
+                        </div>
+                    </div>
+                    <input type="hidden" name="p_pic" id="up_pic" value="" />
+                </div>
+            </div>
+             <div class="layui-col-xs12 layui-col-sm6 layui-col-md12">
+                <div class="layui-form-item">
+                    <label class="layui-form-label">商品简介</label>
+                    <div class="layui-input-block">
+                        <input type="text" name="g_intro" class="layui-input" value="">
+                    </div>
+                </div>
+            </div>
+            <div class="layui-col-xs12 layui-col-sm6 layui-col-md12 layui-col-lg12">
+                  <div class="layui-form-item layui-form-text">
+                    <label class="layui-form-label">商品详情</label>
+                    <div class="layui-input-block">
+                      <textarea class="layui-textarea layui-hide" name="i_info" lay-verify="content" id="goods_detail">{{ data.goodsinfo.i_info }}</textarea>
+                    </div>
+                  </div>
+            </div>
+            <div class="layui-col-xs12 layui-col-sm6 layui-col-md12 layui-col-lg12">
+                <div class="layui-form-item">
+                    <div class="layui-input-inline layui-col-md-offset5">
+                        <br/> <br/>
+                        <input type="hidden" name="id" value="{{ data.id}}">
+                      <button class="layui-btn" lay-submit="" lay-filter="editgoods">立即提交</button>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </form>
+  <!---信息区域End-->
+</div>
+
+{% endblock %}
+
+{% block setjs %}
+<script type="text/javascript" src="/static/back/js/jquery-1.11.0.js"></script>
+<script type="text/javascript" src="/static/back/js/data.js"></script>
+<script type="text/javascript" src="/static/back/js/province.js"></script>
+<script type="text/javascript">
+    var defaults = {
+        s1: 'provid',
+        s2: 'cityid',
+        s3: 'areaid',
+        v1: "{{ data.g_address }}".split(',')[0],
+        v2: "{{ data.g_address }}".split(',')[1],
+        v3: "{{ data.g_address }}".split(',')[2]
+    };
+
+
+</script>
+<script>
+layui.extend({
+	admin: '{/}/static/back/js/admin'
+});
+layui.use(['jquery','form','element','upload','layer','layedit'], function() {
+	var $ = layui.jquery,
+	    layer = layui.layer,
+	    layedit = layui.layedit,
+		element = layui.element,
+		upload = layui.upload,
+		form = layui.form;
+
+    var index = parent.layer.getFrameIndex(window.name); //得到当前iframe层的索引
+
+    //自定义验证规则
+      form.verify({
+        title: function(value){
+            if(value.length < 2){
+                return '商品名称至少得2个字符!';
+            }
+        },
+        saleprice: [/\b(0(\.\d{1,2})?)|1\b/, '折扣为0-1之间的小数']
+      });
+
+    //表单初始赋值
+    form.val('editgoods', {
+        "g_name": "{{ data.g_name }}"
+        ,"g_title": "{{ data.g_title }}"
+        ,"g_price": {{ data.g_price }}
+        ,"g_saleprice": {{ data.g_saleprice }}
+        ,"g_nums": {{ data.g_nums }}
+        ,"g_type": {{ data.g_type }}
+        ,"i_color": "{{ data.goodsinfo.i_color }}"
+        ,"i_size": "{{ data.goodsinfo.i_size }}"
+        ,"i_pinpai": "{{ data.goodsinfo.i_pinpai }}"
+        ,"g_isdel": "{{ data.g_isdel }}"
+        ,"g_intro": "{{ data.g_intro }}"
+        ,"g_mall": "{{ data.g_mall }}"
+    })
+
+    //商品图片上传
+    var path=[]
+    upload.render({
+        elem: '#upgoods'
+        ,url: '{% url 'upgoods_load' %}'
+        ,multiple: true  //多文件上传
+        ,auto: true     //自动上传
+        //,bindAction: '#subtn'  //绑定上传的按钮
+        ,number:5
+        ,accept: 'images'
+		,choose: function(obj){
+			var files = obj.pushFile(); //将每次选择的文件追加到文件队列
+			//图像预览，如果是多文件，会逐个添加。(不支持ie8/9)
+			obj.preview(function(index, file, result){
+			    console.log(index, file)
+				var imgobj = new Image(); //创建新img对象
+				imgobj.src = result; //指定数据源
+				imgobj.className = 'layui-upload-img';
+				imgobj.onclick = function(result) {
+					//单击预览
+					img_prev.src = this.src;
+					//var w = $(window).width() - 142, h = $(window).height() - 142;
+					var w=500, h=500
+					console.log(w,h)
+					layer.open({
+						title: '预览',
+						type: 1,
+						area: [w, h], //宽高
+						shadeClose:true,
+						content: $('#prevModal')
+					});
+				};
+				//console.log(files)
+				document.getElementById("showpic").appendChild(imgobj); //添加到预览区域
+			});
+		}
+        ,done: function(res, index, upload){
+
+            if(res.code == 0){
+                path.push(res.data.src[0])
+            }
+            $('#up_pic').val(path)
+            console.log(path)
+            //如果上传失败
+              if(res.code > 0){
+                return layer.msg(res.msg,{time: 2000, icon:5,offset: '20px',anim: 6});
+              }
+            //上传成功
+        }
+        ,error: function(){
+          //演示失败状态，并实现重传
+          var demoText = $('#demoText');
+          demoText.html('<span style="color: #FF5722;">上传失败</span> <a class="layui-btn layui-btn-mini demo-reload">重试</a>');
+          demoText.find('.demo-reload').on('click', function(){
+            uploadInst.upload();
+          });
+        }
+    });
+
+
+    //配置富文本编辑器
+    layedit.set({
+        uploadImage: {
+            url:'{% url 'goodsupload' %}'
+            ,type: 'post' //默认post
+            ,success: function (res) {
+            console.log(res)
+                if(res.filename){
+                  layer.msg(res.msg, {
+                      icon: 1,
+                      time: 1000,
+                      shade: 0.1
+                  });
+                  var val = $('#L_content').val();
+                  $('#L_content').val(val + '<img src="'+res.filename+'">');
+                }else {
+                  layer.msg(res.msg, {
+                      icon: 5
+                  });
+                }
+            }
+        }
+    });
+
+    layedit.build('goods_detail',{
+        height: 400
+    });
+
+
+    //图片删除
+    $('.close').on('click',function(){
+        id = $(this).attr('pid')
+        th = $(this)
+        $.get('{% url 'pics_del' %}',{id:id},function(res){
+            layer.msg(res.msg, {time: 2000, icon:6,offset: '20px',anim: 6});
+            if(res.code == 1){
+                th.parents('.showgoods').remove()
+                //重载
+                form.render();
+            }
+
+        })
+    })
+
+    //提交
+    form.on('submit(editgoods)',function(data){
+        var addform = $("#addform").serialize()+'&p_cover='+$('input[name=p_cover]').val();
+        console.log(addform)
+        //提交数据
+        $.ajax({
+            async: false,
+            data:addform,
+            type:'POST',
+            dataType: 'json',
+            success: function(result) {
+            console.log(result)
+                parent.layer.close(index);
+                if (result.code == 1) {
+                    parent.layer.msg(result.msg, {time: 2000, icon:6,offset: '20px',anim: 6});
+                }else{
+                    parent.layer.msg(result.msg, {time: 2000, icon:2,offset: '20px',anim: 6});
+                }
+                parent.tableIns.reload({url:"{% url 'getgoods' %}"})
+            },
+            error:function(){
+                layer.msg('数据不正确或未知错误', {time: 2000, icon:2,offset: '20px',anim: 6});
+
+            },
+            url: "{% url 'goodsedit' %}"
+        });
+        return false;
+      });
+
+
+});
+
+//图片展示示例
+
+
+</script>
+{% endblock %}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

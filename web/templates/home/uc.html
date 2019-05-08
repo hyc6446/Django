@@ -1,0 +1,114 @@
+{% extends 'home/public/memberbase.html'%}
+
+<!--网页标题-->
+{% block title %}会员中心{% endblock %}
+
+<!--面包屑导航当前路径-->
+{% block currpath %}个人中心{% endblock %}
+<!--内容区域-->
+{% block container %}
+<div class="uc-content">
+    <div class="uc-panel account-panel">
+        <div class="user-info">
+            <a href=""><img class="headpic" src="{{ data.u_pic }}" alt="头像" /></a>
+            <div class="info">
+                <div><span class="name">{{ data.username }}</span><span class="wel">下午好</span></div>
+                <span class="label">{{ data.u_level.l_name }}</span>
+                <a href="{% url 'uc_account' %}" class="edit">修改个人信息></a>
+            </div>
+        </div>
+        <div class="quick-menu">
+            <div class="item">
+                <a href=""><img class="ico" src="/static/home/img/ico/uc-aq.png"/>账户安全：较高</a>
+            </div>
+            <div class="item">
+                <a href=""><img class="ico" src="/static/home/img/ico/uc-phone.png"/>绑定手机：{{ data.u_phone }}</a>
+            </div>
+            <div class="item">
+                <a href="{% url 'uc_address' %}"><img class="ico" src="/static/home/img/ico/uc-dizhi.png"/>我的收货地址</a>
+            </div>
+            <div class="item">
+                <a href=""><img class="ico" src="/static/home/img/ico/uc-qianbao.png"/>我的钱包</a>
+            </div>
+        </div>
+    </div>
+
+    <div class="uc-panel home-order">
+        <div class="col">
+            <img src="/static/home/img/ico/uc-order1.png" class="ico" />
+            <div class="bd">
+                <div class="tit">待支付的订单：<span class="num">1</span></div>
+                <a class="more" href="">查看待支付订单></a>
+            </div>
+        </div>
+        <div class="col">
+            <img src="/static/home/img/ico/uc-order2.png" class="ico" />
+            <div class="bd">
+                <div class="tit">待发货的订单：<span class="num">1</span></div>
+                <a class="more" href="">查看待支付订单></a>
+            </div>
+        </div>
+        <div class="col">
+            <img src="/static/home/img/ico/uc-order3.png" class="ico" />
+            <div class="bd">
+                <div class="tit">待收货的订单：<span class="num">1</span></div>
+                <a class="more" href="">查看待支付订单></a>
+            </div>
+        </div>
+        <div class="col">
+            <img src="/static/home/img/ico/uc-order4.png" class="ico" />
+            <div class="bd">
+                <div class="tit">待评价的订单：<span class="num">1</span></div>
+                <a class="more" href="">查看待支付订单></a>
+            </div>
+        </div>
+    </div>
+
+    <div class="uc-panel home-wuliu">
+        <div class="home-wuliu-hd">
+            我的物流
+        </div>
+        <div class="home-wuliu-bd">
+            <div class="item">
+                <a href="" class="confirm ui-btn-theme uc-btn-md">确认收货</a>
+                <div class="cont">
+                    <img src="/static/home/uploads/3.jpg" alt="" class="figure" />
+                    <div class="info">
+                        <div class="status">快件已签收，感谢您使用中通快递！</div>
+                        <div>
+                            <span class="time">2016-05-20  16:04:28</span>
+                            <a href="">查看物流明细</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="item">
+                <a href="" class="confirm ui-btn-theme uc-btn-md">确认收货</a>
+                <div class="cont">
+                    <img src="/static/home/uploads/3.jpg" alt="" class="figure" />
+                    <div class="info">
+                        <div class="status">快件已签收，感谢您使用中通快递！</div>
+                        <div>
+                            <span class="time">2016-05-20  16:04:28</span>
+                            <a href="">查看物流明细</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="item">
+                <a href="" class="confirm ui-btn-theme uc-btn-md">确认收货</a>
+                <div class="cont">
+                    <img src="/static/home/uploads/3.jpg" alt="" class="figure" />
+                    <div class="info">
+                        <div class="status">快件已签收，感谢您使用中通快递！</div>
+                        <div>
+                            <span class="time">2016-05-20  16:04:28</span>
+                            <a href="">查看物流明细</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

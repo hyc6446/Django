@@ -1,0 +1,226 @@
+{% extends 'back/public/basetop.html' %}
+
+{% block title %}商品类别添加页面{% endblock %}
+{% block mycss %}
+<link rel="stylesheet" href="/static/back/css/weadmin.css">
+<link rel="stylesheet" href="/static/back/css/style.css">
+<style>
+  .layui-upload-img {
+    width: 92px;
+    height: 92px;
+    margin: 0 10px 10px 0;
+}
+</style>
+{% endblock %}
+
+{% block currpath %}商品类别添加页面{% endblock %}
+{% block contains%}
+<div class="weadmin-body">
+  <!---会员信息区域Start-->
+    <form class="layui-form layui-form-pane" method="post" id="addform">
+        {% csrf_token %}
+        <div class="layui-row">
+            <div class="layui-form-item">
+                <label class="layui-form-label"><i style="color:red;">*</i>&nbsp;管理员名称</label>
+                <div class="layui-input-inline">
+                    <input type="text" name="username" id="username" lay-verify="required|username" autocomplete="off" placeholder="请输入管理员名称" class="layui-input">
+                </div>
+                 <div class="layui-form-mid layui-word-aux">&nbsp;&nbsp;允许5-16位字符，允许字母数字下划线！</div>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label"><i style="color:red;">*</i>&nbsp;管理员密码</label>
+                <div class="layui-input-inline">
+                    <input type="password" name="password" lay-verify="required|password" autocomplete="off" placeholder="请输入管理员密码" class="layui-input">
+                </div>
+                 <div class="layui-form-mid layui-word-aux">&nbsp;&nbsp;管理员密码必须6到12位！</div>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label"><i style="color:red;">*</i>&nbsp;确认密码</label>
+                <div class="layui-input-inline">
+                    <input type="password" name="repassword" lay-verify="required|repassword" autocomplete="off" placeholder="请再次输入管理员密码" class="layui-input">
+                </div>
+                 <div class="layui-form-mid layui-word-aux">&nbsp;&nbsp;输入和管理员密码相同的字符</div>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label">邮箱</label>
+                <div class="layui-input-block">
+                    <input type="text" name="email" autocomplete="off" placeholder="请输入邮箱" class="layui-input">
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label"><i style="color:red;">*</i>&nbsp;角色</label>
+                <div class="layui-input-block">
+                  <input type="radio" name="is_superuser" value="1" title="超级管理员" />
+                  <input type="radio" name="is_superuser" value="0" title="普通管理员" checked />
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label"><i style="color:red;">*</i>&nbsp;头像</label>
+                <div class="layui-input-block">
+                    <div class="layui-upload">
+                      &nbsp;&nbsp;<button type="button" class="layui-btn" id="user_icon">上传头像</button>
+                      <div class="layui-upload-list">
+                        <img class="layui-upload-img" id="demo1">
+                        <p id="demoText"></p>
+                      </div>
+                    </div>
+                </div>
+            </div>
+
+            <br><br>
+            <div class="layui-form-item">
+                <div class="layui-input-block">
+                    <input type="text" name="user_icon" id="usericon" value="">
+                    <button class="layui-btn" lay-submit="" lay-filter="addtype">立即提交</button>
+
+                    <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+                </div>
+            </div>
+        </div>
+
+  </form>
+  <!---会员信息区域End-->
+</div>
+{% endblock %}
+
+{% block setjs %}
+<script>
+layui.extend({
+	admin: '{/}/static/back/js/admin'
+});
+layui.use(['form','jquery','table','layer','upload'], function() {
+	var form = layui.form,
+	    table = layui.table,
+	    layer = layui.layer,
+	    upload = layui.upload,
+	    $ = layui.jquery;
+
+    var index = parent.layer.getFrameIndex(window.name); //得到当前iframe层的索引
+
+    //自定义验证规则
+    form.verify({
+      username: function(value){ //value：表单的值、
+        if(!new RegExp("^[a-zA-Z][a-zA-Z0-9_]{4,15}$").test(value)){
+          return '管理员名称须已字母开头，允许5-16位字符，允许字母数字下划线';
+        }
+      }
+    ,password: [/(.+){6,12}$/, '密码必须6到12位']
+    ,repassword: function(value, item){ //value：表单的值、item：表单的DOM对象
+        var vpwd = $(item).parents('form').find('input[name=password]').val();
+        if(value != vpwd ){
+          return '两次密码输入不一致！';
+        }
+      }
+
+    });
+
+    //失去焦点检测用户名是否存在
+    $('#username').on('blur', function () {
+        //验证账号是否已有
+        $.ajax({
+            async: false,
+            data: {
+                username: $('#username').val()
+            },
+            dataType: 'json',
+            success: function(result) {
+                console.log(result)
+                if (result.code == 1) {
+                    layer.msg('用户名已存在,请更换一个！', {time: 2000, icon:5,offset: '20px',anim: 6});
+                }
+                if (result.rel== 0) {
+                   layer.msg('数据不正确或未知错误', {time: 2000, icon:2,offset: '20px',anim: 6});
+                }
+            },
+            error:function(){
+               layer.msg('数据不正确或未知错误', {time: 2000, icon:2,offset: '20px',anim: 6});
+            },
+            url: '{% url 'auto_user_checkname' %}' // 这里写你要验证的地址哦。
+        });
+    });
+
+
+    //普通图片上传
+    var uploadInst = upload.render({
+        elem: '#user_icon'
+        ,url: '{% url 'auto_user_icon' %}'
+        ,before: function(obj){
+        //预读本地文件示例，不支持ie8
+        obj.preview(function(index, file, result){
+            $('#demo1').attr('src', result); //图片链接（base64）
+        });
+        }
+        ,done: function(res){
+        //如果上传失败
+        if(res.code == 0){
+            return layer.msg(res.msg,{time: 2000, icon:5,offset: '20px',anim: 6});
+        }else{
+            $('#usericon').val(res.path)
+            return layer.msg(res.msg,{time: 2000, icon:6,offset: '20px',anim: 6});
+        }
+        //上传成功
+        }
+        ,error: function(){
+        //演示失败状态，并实现重传
+        var demoText = $('#demoText');
+        demoText.html('<span style="color: #FF5722;">上传失败</span> <a class="layui-btn layui-btn-mini demo-reload">重试</a>');
+        demoText.find('.demo-reload').on('click', function(){
+            uploadInst.upload();
+        });
+        }
+    });
+
+    //提交
+      form.on('submit(addtype)',function(data){
+        var addform = $("#addform").serialize();
+
+        //提交数据
+        $.ajax({
+            async: false,
+            data:addform,
+            type:'POST',
+            dataType: 'json',
+            success: function(result) {
+                parent.layer.close(index);
+                if (result.code == 1) {
+                    parent.layer.msg(result.msg, {time: 2000, icon:6,offset: '20px',anim: 6});
+                }else{
+                    parent.layer.msg(result.msg, {time: 2000, icon:2,offset: '20px',anim: 6});
+                }
+                parent.tableIns.reload({url:""})
+            },
+            error:function(){
+                layer.msg('数据不正确或未知错误', {time: 2000, icon:2,offset: '20px',anim: 6});
+
+            },
+            url: "{% url 'auth_add' %}" // 这里写你要验证的地址哦。
+        });
+        return false;
+      });
+
+
+});
+
+</script>
+{% endblock %}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,98 @@
+{% extends 'back/public/basetop.html' %}
+
+{% block title %}会员信息{% endblock %}
+{% block mycss %}
+<link rel="stylesheet" href="/static/back/css/weadmin.css">
+<link rel="stylesheet" href="/static/back/css/style.css">
+{% endblock %}
+
+{% block currpath %}会员信息{% endblock %}
+{% block contains%}
+<div class="weadmin-body">
+  <!---信息区域Start-->
+<form class="layui-form" action="" lay-filter="editgoods" id="addform">
+        <div class="layui-row" >
+             <blockquote class="layui-elem-quote layui-text">
+              1.商品的图片最多可选5张，并在前台显示.&nbsp;&nbsp;&nbsp;&nbsp;<br/>
+              2.商品图片需在添加后才可以选择,&nbsp;&nbsp;.</br/>
+              3.<span style="color:red">商品图片删除,不可恢复.请慎重!!!&nbsp;&nbsp;.</span>
+            </blockquote><br/>
+            <div class="layui-col-xs12">
+                {% for v in data %}
+                    {% if forloop.counter < 6 %}
+                        <div class="layui-col-xs12 layui-col-sm2 layui-col-md2 showgoods">
+                            <img src="{{ v.p_pic }}" alt="{{ v.p_name }}" title="选中设为主图" width="80" height="80" /><br/>
+                            <a class="close" href="javascript:void(0)" pid="{{ v.id }}"><i class="fa fa-close" aria-hidden="true"></i></a>
+                            <br><input type="checkbox" name="p_cover" value="{{ v.id }}" lay-skin="primary" {% if v.p_cover == 1 %} checked {% endif %}>
+                        </div>
+                    {% endif %}
+                {% empty %}
+                    <div style="line-height:90px;">暂无商品图片！</div>
+                {% endfor %}
+
+            </div>
+        </div>
+</form>
+
+
+
+
+  <!---会员信息区域End-->
+</div>
+
+{% endblock %}
+
+{% block setjs %}
+<script>
+layui.extend({
+	admin: '{/}/static/back/js/admin'
+});
+layui.use(['jquery','form','layer','layedit'], function() {
+	var $ = layui.jquery,
+	    layer = layui.layer,
+	    layedit = layui.layedit,
+		form = layui.form;
+
+
+    layer.ready(function(){
+        layer.photos({
+            photos: '#layer-photos-demo'
+        });
+
+    });
+
+    //配置富文本编辑器
+    layedit.build('goods_detail',{
+        height: 400
+    });
+});
+
+    //图片删除
+    $('.close').on('click',function(){
+        alert(0)
+    })
+
+
+</script>
+{% endblock %}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,101 @@
+{% extends 'back/public/basetop.html' %}
+
+{% block title %}会员信息{% endblock %}
+{% block mycss %}
+<link rel="stylesheet" href="/static/back/css/weadmin.css">
+<link rel="stylesheet" href="/static/back/css/style.css">
+<style>
+  .layui-table-cell{
+    height:100px;
+    line-height:100px;
+  }
+</style>
+{% endblock %}
+
+{% block currpath %}会员信息{% endblock %}
+{% block contains%}
+<div class="weadmin-body">
+  <!---信息区域Start-->
+<table class="layui-table layui-hide" id="orderdetailList" lay-filter="orderdetaillist"></table>
+  <!---会员信息区域End-->
+</div>
+    <!--商品图片-->
+    <script type="text/html" id="d_pic">
+      <div style="height:100px;">
+        <img src="{% verbatim %}{{ d.d_pic }}{% endverbatim %}" alt="{% verbatim %}{{ d.name }}{% endverbatim %}" title="{% verbatim %}{{ d.name }}{% endverbatim %}" height="100" />
+      </div>
+    </script>
+{% endblock %}
+
+{% block setjs %}
+<script>
+layui.extend({
+	admin: '{/}/static/back/js/admin'
+});
+layui.use(['table', 'jquery', 'admin','element'], function() {
+	var table = layui.table,
+	    element = layui.element,
+		$ = layui.jquery;
+    //表格内容
+    tableIns =
+    table.render({
+        elem: '#orderdetailList',
+        cellMinWidth: 80,
+        cols: [
+            [{
+                field: 'id',title: 'ID', width:80,sort: true, align: 'center'
+            },{
+                field: 'd_pic',title: '商品图片',width:180,templet: '#d_pic', align: 'center'
+            },{
+                field: 'name',title: '商品名称'
+            },{
+                field: 'price',title: '商品价格',width:200, align: 'center'
+            },{
+                field: 'saleprice',title: '商品折扣',width:120, align: 'center'
+            },{
+                field: 'd_num',title: '购买数量' ,width:120, align: 'center'
+            },{
+                field: 'mall',title: '是否包邮', align: 'center',width:120
+            },{
+                field: 'type',title: '商品类型',width:120 , align: 'center' ,templet: '#isdel'
+            }]
+        ]
+        ,data:{{ data|safe }}
+        ,event: true
+        ,page:true
+        ,page: {
+            layout: ['count', 'prev', 'page', 'next'] //自定义分页布局
+            ,groups: 10 //只显示 1 个连续页码
+            ,first: true //不显示首页
+            ,last: false //不显示尾页
+        }
+        ,limit:10
+        ,done: function(res, curr, count){
+            element.init();
+        }
+    });
+
+});
+</script>
+{% endblock %}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

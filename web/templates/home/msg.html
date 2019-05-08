@@ -1,0 +1,36 @@
+{% extends 'home/public/simplebase.html' %}
+{% block title %}信息提示{% endblock %}
+{% block setcss %}
+<script src="/static/home/js/jquery.js"></script>
+{% endblock %}
+{% block container %}
+    <!--头部-->
+        <div class="bd-t"></div>
+        <div class="wrapper">
+            <div class="ui-page-notice cartempty">
+                <div class="section">
+                    <div>
+                        <div class="tit"><i class="ico iconfont icon-zhengquetishi"></i>{{ msg }}</div>
+                        <div><span id="time">5</span>秒后为您跳转到首页，您可以在首页试着找找您所需要的信息。</div><br>
+                        <div>
+                            <a href="{% url 'index' %}">【返回首页】</a>&nbsp;&nbsp;&nbsp;&nbsp;<a href="{% url 'login' %}">【立即登录】</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+<script type="text/javascript">
+    onload=function(){
+        setInterval(go, 1000);
+    };
+    var x=5; //利用了全局变量来执行
+    function go(){
+        x--;
+        if(x>0){
+            $('#time').html(x);
+        }else{
+            location.href='/';
+        }
+    }
+</script>
+{% endblock %}

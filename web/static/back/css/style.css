@@ -1,0 +1,130 @@
+/*   
+  SmartWizard 2.0 plugin 
+  jQuery Wizard control Plugin
+  by Dipu
+  
+  http://www.techlaboratory.net
+  http://tech-laboratory.blogspot.com
+*/
+.goods_pic{
+  margin-top:10px;
+  padding: 0;
+}
+.goods_pic label{
+  line-height: 80px;
+ 
+}
+.goods_pic .layui-input-block{
+ 
+  margin-left:20px;
+}
+.showgoods{
+  margin:0 4px;
+  text-align: center;
+}
+.showgoods img{
+  border:1px solid #aaa;
+  padding:3px;
+  background: #fff;
+  cursor: pointer;
+  position: relative;
+}
+
+.showgoods a.close{
+  position: absolute;
+  width: 10px;
+  height: 10px;
+  right:30px;
+  top:0;
+  cursor: pointer;
+}
+.showgoods .layui-form-radio{
+  margin:10px auto;
+  text-align: center;
+  padding:0;
+}
+
+
+/**/
+.swMain {
+
+}
+.swMain ul.anchor li a.selected{
+  color:#009688;
+  cursor:text;
+}
+.swMain ul.anchor li a.done { 
+  position:relative;
+  color:#333;  
+  z-index:99;
+}
+
+.swMain ul.anchor li a.error {
+  color:#6c6c6c !important;  
+  background:#f08f75 !important;
+  border:1px solid #0f0 !important;      
+}
+.swMain ul.anchor li a.error:hover {
+  color:#000 !important;       
+}
+
+.swMain .stepContainer {
+  display:block;
+  position:relative;
+  margin-top:15px;
+  padding:0;
+  overflow: hidden;    
+  border:0px solid #CCC;    
+  clear:both;
+  min-height:300px;
+}
+
+.swMain .stepContainer div.content {
+  margin:0 auto;
+  padding:5px;    
+  color:#5A5655;   
+  min-height:300px;
+  text-align:left;
+  overflow: visible;
+  z-index:88; 
+  -webkit-border-radius:5px;
+  -moz-border-radius:5px;
+  clear:both;
+}
+
+.swMain div.actionBar {
+  clear:both;
+  margin: 20px auto 0;   
+  padding:         0;    
+  color:           #5A5655;   
+  height:40px;
+  text-align:left;
+  overflow:auto;    
+  z-index:88; 
+}
+/* Anchor Element Style */
+.swMain .buttonNext,.swMain .buttonPrevious,.swMain .buttonFinish,.swMain .buttonDisabled,.swMain .stepbtn{
+    float:right;
+    margin:0 20px;
+}
+
+.swMain .buttonDisabled {
+  color:#333  !important;
+  background-color:#CCCCCC !important;
+  cursor:text;    
+}
+
+/* Form Styles */
+.swMain .loader {
+  position:relative;  
+  display:none;
+  float:left;  
+  margin:2px 0 0 2px;
+  padding:8px 10px 8px 40px;
+  border:1px solid #FFD700; 
+  color:#5A5655;       
+  background:#FFF url(../img/loader.gif) no-repeat 5px;  
+  -moz-border-radius:5px;
+  -webkit-border-radius:5px;
+  z-index:998;
+}

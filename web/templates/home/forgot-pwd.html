@@ -1,0 +1,45 @@
+{% extends 'home/public/simplebase.html' %}
+{% block title %}会员登录{% endblock %}
+{% block container %}
+
+
+ {% block container %}
+    <div class="wrapper">
+    <div class="center-box ">
+
+        <div class="box-hd box-hd-tabs">
+            <a href="javascript:;" class="item">手机找回密码</a>
+            <a href="javascript:;" class="item">邮箱找回密码</a>
+        </div>
+        <div class="tab-con">
+            <form action="" method="">
+                <label class="txtin-box">
+                    <input class="txtin" type="text" name="phone" placeholder="手机" />
+                </label>
+                <label class="txtin-box txtin-box-code">
+                    <input class="txtin" type="text" name="pcode" placeholder="短信验证码" />
+                    <a href="" class="get-yzm">获取验证码</a>
+                </label>
+                <label class="txtin-box txtin-box-code">
+                    <input class="txtin" type="text" name="vcode" placeholder="验证码" />
+                    <img class="yzm" src="" alt="" />
+                </label>
+                <a class="tj" href="reset.pwd.html">完&ensp;成</a>
+                <!-- <input class="tj" type="submit" value="完&ensp;成" /> -->
+            </form>
+        </div>
+        <div class="tab-con">
+            <form action="" method="">
+                <label class="txtin-box">
+                    <input class="txtin" type="text" name="email" placeholder="邮箱" />
+                </label>
+                <label class="txtin-box txtin-box-code">
+                    <input class="txtin" type="text" name="ecode" placeholder="验证码" />
+                    <img class="yzm" src="" alt="" />
+                </label>
+                <input class="tj" type="submit" value="完&ensp;成" />
+            </form>
+        </div>
+    </div>
+    </div>
+{% endblock %}

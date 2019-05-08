@@ -1,0 +1,118 @@
+{% extends 'back/public/basetop.html' %}
+
+{% block title %}会员信息{% endblock %}
+{% block mycss %}
+<link rel="stylesheet" href="/static/back/css/weadmin.css">
+{% endblock %}
+
+{% block currpath %}会员信息{% endblock %}
+{% block contains%}
+<div class="weadmin-body">
+  <!---会员信息区域Start-->
+    <form class="layui-form layui-form-pane" action="">
+        <div class="layui-row">
+            <div class="layui-col-md8 layui-col-xs8">
+                <div class="layui-form-item">
+                    <label class="layui-form-label">会员名称</label>
+                    <div class="layui-input-inline">
+                        <input type="text" class="layui-input title" value="{{ data.username }}" disabled="">
+                    </div>
+                </div>
+                <div class="layui-form-item ">
+                    <label class="layui-form-label">真实姓名</label>
+                    <div class="layui-input-inline">
+                        <input type="text" class="layui-input source" value="{{ data.truename }}" disabled="">
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label">联系方式</label>
+                    <div class="layui-input-inline">
+                        {% load mytags %}
+                        <input type="text" class="layui-input title" value="{% SetPhone data.u_phone %}" disabled="">
+                    </div>
+                </div>
+                <div class="layui-form-item ">
+                    <label class="layui-form-label">年龄</label>
+                    <div class="layui-input-inline">
+                        <input type="text" class="layui-input source" value="{{ data.age }}" disabled="">
+                    </div>
+                </div>
+            </div>
+            <div class="layui-col-md3 layui-col-xs3">
+                <div class="layui-upload-list admin-box mag0 magt3">
+                    <img class="layui-upload-img thumbImg layui-circleo" src="{{ data.u_pic }}" width="150" height="150">
+                    <input type="text" class="layui-input layui-hide img" name="img">
+                </div><input class="layui-upload-file" type="file" name="file">
+            </div>
+            <div class="layui-form-item">
+                <div class="layui-inline">
+                  <label class="layui-form-label">会员等级</label>
+                  <div class="layui-input-block">
+                    <input type="text" class="layui-input title" value="{{ data.u_level.l_name }}" disabled="">
+                  </div>
+                </div>
+                <div class="layui-inline" pane="">
+                  <label class="layui-form-label">注册时间</label>
+                  <div class="layui-input-inline">
+                     <input type="text" class="layui-input title" value="{{ data.u_addtime|date:'Y-m-d H:i:s'  }}" disabled="">
+                  </div>
+                </div>
+            </div>
+              <div class="layui-form-item">
+                <label class="layui-form-label">性别</label>
+                <div class="layui-input-block">
+                  <input type="radio" name="sex" value="男" title="男" {% if data.sex == "男" %} checked  {% else %}  disabled="" {% endif %}>
+                  <input type="radio" name="sex" value="女" title="女" {% if data.sex == "女" %} checked {% else %} disabled="" {% endif %}>
+                </div>
+              </div>
+              <div class="layui-form-item">
+                <label class="layui-form-label">状态</label>
+                <div class="layui-input-block">
+                  <input type="radio" name="status" value="已审核" title="已审核" {% if data.u_status == "已审核" %} checked {% else %} disabled="" {% endif %}>
+                  <input type="radio" name="status" value="未审核" title="未审核" {% if data.u_status == "未审核" %} checked {% else %} disabled="" {% endif %}>
+                </div>
+              </div>
+              <div class="layui-form-item">
+                <label class="layui-form-label">地址信息</label>
+                <div class="layui-input-block">
+                  <input type="text" name="address" class="layui-input title" value="{{ data.u_address }}"  disabled="">
+                </div>
+              </div>
+              <div class="layui-form-item layui-form-text">
+                <label class="layui-form-label">个人简介</label>
+                <div class="layui-input-block">
+                  <textarea placeholder="这家伙很懒！" class="layui-textarea" disabled="">{{ data.u_intro }}</textarea>
+                </div>
+              </div>
+        </div>
+
+  </form>
+  <!---会员信息区域End-->
+</div>
+{% endblock %}
+
+{% block setjs %}
+<script src="/static/back/js/udetail.js" type="text/javascript" charset="utf-8"></script>
+
+{% endblock %}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

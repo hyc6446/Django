@@ -1,0 +1,46 @@
+{% extends 'home/public/simplebase.html' %}
+{% block title %}会员注册{% endblock %}
+{% block setcss %}
+
+{% endblock %}
+{% block container %}
+<div class="main-wrap">
+    <div class="wrapper">
+        <div class="center-box">
+            <form class="layui-form" action="" method="post">
+                {% csrf_token %}
+                <div class="box-hd">
+                    <span class="tit">用户注册</span>
+                    <a href="{% url 'login' %}">账号登陆</a>
+                </div>
+
+                <label class="txtin-box">
+                    <input class="txtin" type="text" id="username" name="username" lay-verify="required|username" autocomplete="on" placeholder="请输入用户名" />
+                </label>
+                <label class="txtin-box">
+                    <input class="txtin" type="text" name="phone" lay-verify="required|phone" autocomplete="on" placeholder="请输入手机号" />
+                </label>
+                <!--label class="txtin-box txtin-box-code">
+                    <input class="txtin" type="text" name="vcode" lay-verify="required" autocomplete="off" placeholder="验证码" />
+                    <a href="" class="get-yzm">获取验证码</a>
+                </label-->
+                <label class="txtin-box">
+                    <input class="txtin" type="password" name="password" lay-verify="required|password"  placeholder="输入密码" />
+                </label>
+                <label class="txtin-box">
+                    <input class="txtin" type="password" name="repassword" lay-verify="required|repassword" placeholder="确认密码" />
+                </label>
+                <div class="clearfix tool">
+                    <input type="checkbox" name="agree" id="agree" lay-skin="primary" >&nbsp;&nbsp;<label for="agree">我已阅读并同意xx《<a href="">服务协议</a>》</label>
+                </div>
+                <input type="hidden" value="{% url 'checkusername' %}" id="path">
+                <input class="tj" type="submit" value="注&ensp;册" lay-submit="" lay-filter="demo2"/>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block setjs %}
+<script src="/static/home/js/formcheck.js"></script>
+{% endblock %}

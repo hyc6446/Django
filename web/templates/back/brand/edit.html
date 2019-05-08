@@ -1,0 +1,168 @@
+{% extends 'back/public/basetop.html' %}
+
+{% block title %}品牌详细信息{% endblock %}
+{% block mycss %}
+<link rel="stylesheet" href="/static/back/css/weadmin.css">
+<link rel="stylesheet" href="/static/back/css/style.css">
+{% endblock %}
+
+{% block currpath %}品牌详细信息{% endblock %}
+{% block contains%}
+<div class="weadmin-body">
+  <!---信息区域Start-->
+    <form class="layui-form" lay-filter="brand_info" id="addform">
+        <div class="layui-row layui-form-pane">
+                <div class="layui-form-item">
+                    <label class="layui-form-label">品牌名称</label>
+                    <div class="layui-input-block">
+                        <input type="text" class="layui-input" name="b_name" />
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label">品牌简介</label>
+                    <div class="layui-input-block">
+                        <input type="text" name="b_intro" class="layui-input" />
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label">所属分类</label>
+                    <div class="layui-input-block">
+                      <select name="p_tid">
+                        <option value="">请选择所属分类</option>
+                          {% for v in types %}
+                        <option value="{{ v.id }}">{{ v.t_name }}</option>
+                          {% empty %}
+                        <option value="">请选择所属分类</option>
+                          {% endfor %}
+                      </select>
+
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label">是否启用</label>
+                    <div class="layui-input-block">
+                      <input type="radio" name="b_isdel" value="启用" title="启用" />
+                      <input type="radio" name="b_isdel" value="禁用" title="禁用" />
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label">Logo展示</label>
+                    <div class="layui-input-block">
+                        &nbsp;&nbsp;<img src="{{ data.b_logo }}" alt="{{ data.name }}" title="{{ data.name }}"class="layui-upload-img" id="showpic" />
+                        <span id="demoText"></span>
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label">品牌Logo</label>
+                    <div class="layui-input-block">
+                        <div class="layui-upload">
+                          <button type="button" class="layui-btn" id="upgoods">
+                              <i class="fa fa-cloud-upload fa-lg" aria-hidden="true"></i>&nbsp;&nbsp;品牌图标
+                          </button>
+                        </div>
+                    </div>
+                    <input type="hidden" name="b_logo" id="b_logo" value="" />
+                </div>
+            <div class="layui-col-md4 layui-col-md-offset4">
+                <div class="layui-form-item">
+                    <div class="layui-input-block">
+                        <br/> <br/>
+                        <input type="hidden" name="id" value="{{ data.id}}">
+                      <button class="layui-btn" lay-submit="" lay-filter="editbrand">立即提交</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+  <!---会员信息区域End-->
+</div>
+
+{% endblock %}
+
+{% block setjs %}
+<script>
+layui.extend({
+	admin: '{/}/static/back/js/admin'
+});
+layui.use(['jquery','form','layer','upload'], function() {
+	var $ = layui.jquery,
+	    layer = layui.layer,
+	    upload = layui.upload,
+		form = layui.form;
+    var index = parent.layer.getFrameIndex(window.name); //得到当前iframe层的索引
+
+     //表单初始赋值
+      form.val('brand_info', {
+        "b_name": "{{ data.b_name }}"
+        ,"b_intro": "{{ data.b_intro }}"
+        ,"p_tid": {{ data.t_id }}
+        ,"b_isdel": "{{ data.b_isdel }}"
+      })
+
+ //普通图片上传
+  var uploadInst = upload.render({
+    elem: '#upgoods'
+    ,url: '{% url 'brand_upload' %}'
+    ,before: function(obj){
+      //预读本地文件
+      obj.preview(function(index, file, result){
+        $('#showpic').attr('src', result); //图片链接（base64）
+      });
+    }
+    ,done: function(res, index, upload){
+    //console.log(res.path)
+      //如果上传失败
+      if(res.code == 1){
+        $("#b_logo").attr('value',res.path)
+        return layer.msg(res.msg,{time: 2000, icon:6,offset: '20px',anim: 6});
+      }else{
+        return layer.msg(res.msg,{time: 2000, icon:5,offset: '20px',anim: 6});
+      }
+
+      //上传成功
+    }
+    ,error: function(){
+      //演示失败状态，并实现重传
+      var demoText = $('#demoText');
+      demoText.html('<span style="color: #FF5722;">上传失败</span> <a class="layui-btn layui-btn-mini demo-reload">重试</a>');
+      demoText.find('.demo-reload').on('click', function(){
+        uploadInst.upload();
+      });
+    }
+  });
+
+    //提交
+    form.on('submit(editbrand)',function(data){
+        var addform = $("#addform").serialize();
+        console.log(addform)
+        //提交数据
+        $.ajax({
+            async: false,
+            data:addform,
+            type:'POST',
+            dataType: 'json',
+            success: function(result) {
+                if (result.code == 1) {
+                    layer.msg(result.msg, {time: 1000, icon:6,offset: '20px',anim: 6},function(){
+                        parent.layer.close(index);
+                        parent.tableIns.reload({url:"{% url 'brand_getdata' %}"})
+                    });
+                }else{
+                    layer.msg(result.msg, {time: 1000, icon:2,offset: '20px',anim: 6},function(){
+                        parent.layer.close(index);
+                    });
+                }
+            },
+            error:function(){
+                layer.msg('数据不正确或未知错误', {time: 2000, icon:2,offset: '20px',anim: 6});
+
+            },
+            url: "{% url 'brand_edit' %}"
+        });
+        return false;
+      });
+
+});
+</script>
+{% endblock %}
+

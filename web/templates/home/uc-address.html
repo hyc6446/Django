@@ -1,0 +1,59 @@
+{% extends 'home/public/memberbase.html'%}
+
+<!--网页标题-->
+{% block title %}收货地址{% endblock %}
+
+<!--面包屑导航当前路径-->
+{% block currpath %}收货地址{% endblock %}
+<!--内容区域-->
+{% block container %}
+
+<div class="uc-content">
+    <div class="uc-panel">
+        <div class="uc-bigtit">收货地址</div>
+        <div class="uc-panel-bd">
+
+                <div class="ui-msg-info ui-msg-block">您已创建 2 个收货地址，最多可创建 5 个</div>
+
+                <div class="address-list">
+                    <div class="col col-4">
+                        <a class="item va-m-box ta-c add">
+                            <div class="add-new">
+                                <span class="ico"><i class="iconfont icon-tianjia"></i></span>
+                                <div class="label">添加收货地址</div>
+                            </div>
+                        </a>
+                    </div>
+                    <div class="col col-4">
+                        <div class="item">
+                            <div class="action">
+                                <div class="fl"><a class="edit" href="javascript:;">修改</a><a class="del" href="javascript:;">删除</a></div>
+                                <div class="fr"><a class="setdft" href="javascript:;">设为默认</a></div>
+
+                            </div>
+                            <div class="info">
+                                <div class="info-item name ellipsis">安徽合肥（小柚子 收）</div>
+                                <div class="info-item address">瑶海区东方商城</div>
+                                <div class="info-item tel ellipsis">13666666666</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col col-4">
+                        <div class="item active">
+                            <div class="action">
+                                <div class="fl"><a class="edit" href="javascript:;">修改</a><a class="del" href="javascript:;">删除</a></div>
+                                <div class="fr"><a class="setdft" href="javascript:;">设为默认</a></div>
+                            </div>
+                            <div class="info">
+                                <div class="info-item name ellipsis">安徽合肥（小柚子 收）</div>
+                                <div class="info-item address">瑶海区东方商城</div>
+                                <div class="info-item tel ellipsis">13666666666</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+        </div>
+    </div>
+</div>
+{% endblock %}

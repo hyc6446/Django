@@ -1,0 +1,64 @@
+
+{% extends 'home/public/memberbase.html'%}
+
+<!--网页标题-->
+{% block title %}商品评论{% endblock %}
+
+<!--面包屑导航当前路径-->
+{% block currpath %}商品评论{% endblock %}
+<!--内容区域-->
+{% block container %}
+<div class="uc-content">
+    <div class="uc-panel">
+        <div class="uc-bigtit">商品评价</div>
+        <div class="uc-panel-bd">
+            <table class="evalute-table">
+                <tr class="hd">
+                    <th width="360">
+                        <select name=""class="ui-txtin" style="width:120px;"><option value="">评价</option><option value="">好价</option><option value="">中价</option><option value="">评价</option></select>
+                        <select name=""class="ui-txtin ml10" style="width:120px;"><option value="">评论</option><option value="">有评论内容</option><option value="">无评论内容</option></select>
+                    </th>
+                    <th>被评价人</th>
+                    <th>宝贝信息</th>
+                    <th class="align-center">操作</th>
+                </tr>
+                <tr class="item">
+                    <td>
+                        <div class="cont">宝贝真心不错，质量很棒，下次还来<div class="time">[2016-05-29 16:02] </div></div>
+                    </td>
+                    <td>商家：小米旗舰店</td>
+                    <td>小米短袖T恤 五彩换<div class="text-theme">499.00元</div></td>
+                    <td class="align-center"><a class="ui-btn-theme uc-btn-md" href="">回复</a></td>
+                </tr>
+                <tr class="item">
+                    <td>
+                        <div class="cont good">宝贝真心不错，质量很棒，下次还来<div class="time">[2016-05-29 16:02] </div></div>
+                    </td>
+                    <td>商家：小米旗舰店</td>
+                    <td>小米短袖T恤 五彩换<div class="text-theme">499.00元</div></td>
+                    <td class="align-center"><a class="ui-btn-theme uc-btn-md" href="">回复</a></td>
+                </tr>
+                <tr class="item">
+                    <td>
+                        <div class="cont bad">宝贝真心不错，质量很棒，下次还来<div class="time">[2016-05-29 16:02] </div></div>
+                    </td>
+                    <td>商家：小米旗舰店</td>
+                    <td>小米短袖T恤 五彩换<div class="text-theme">499.00元</div></td>
+                    <td class="align-center"><a class="ui-btn-theme uc-btn-md" href="">回复</a></td>
+                </tr>
+            </table>
+
+            <div class="pages">
+                <a class="page prev" href="">上一页</a>
+                <a class="page" href="">1</a>
+                <span class="cur-page">2</span>
+                <a class="page" href="">3</a>
+                <a class="page" href="">4</a>
+                <i class="page-split">...</i>
+                <a class="page" href="">71</a>
+                <a class="page next" href="">下一页</a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

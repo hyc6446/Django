@@ -1,0 +1,137 @@
+{% extends 'back/public/base.html' %}
+
+{% block title %}商品列表{% endblock %}
+{% block mycss %}
+<link rel="stylesheet" href="/static/back/css/weadmin.css">
+{% endblock %}
+
+{% block currpath %}商品列表{% endblock %}
+{% block contains%}
+<div class="weadmin-body">
+  <!---搜索区域Start-->
+    <div class="weadmin-block userTable">
+        <a href="{% url 'brand_add' %}" class="layui-btn" ><i class="fa fa-plus-circle fa-lg layui-anim" aria-hidden="true"></i>&nbsp;&nbsp;添加品牌</a>
+        <a href="{% url 'brand_trash' %}" class="layui-btn layui-btn-danger" ><i class="fa fa-trash fa-lg" aria-hidden="true"></i>&nbsp;&nbsp;回收站</a>
+    </div>
+  <!---搜索区域End-->
+
+  <!---表格区域Start-->
+
+    <table class="layui-table layui-hide" lay-size="lg" id="brandList" lay-filter="brandlist"></table>
+    <!--操作模块-->
+    <script type="text/html" id="operateTpl">
+        <a title="查看品牌详情" class="layui-btn layui-btn-normal layui-btn-xs" href="javascript:;" lay-event="detail">
+            <i class="fa fa-eye" aria-hidden="true"></i>&nbsp;查看
+        </a>
+        <a title="编辑品牌信息" class="layui-btn layui-btn-xs" href="javascript:;" lay-event="edit">
+            <i class="fa fa-edit" aria-hidden="true"></i>&nbsp;修改
+        </a>
+    </script>
+    <!--商品类别-->
+
+    <!--商品图片-->
+    <script type="text/html" id="brandpic">
+         <img src="{% verbatim %}{{ d.b_logo }}{% endverbatim %}" alt="{% verbatim %}{{ d.b_name }}{% endverbatim %}" title="{% verbatim %}{{ d.b_name }}{% endverbatim %}" height="30" />
+    </script>
+
+    <!--商品状态-->
+    <script type="text/html" id="isdel">
+      {% verbatim %}{{#  if(d.b_isdel === '启用' ){ }}{% endverbatim %}
+         <button class="layui-btn layui-btn-xs change_status" tid="{% verbatim %}{{ d.id }}{% endverbatim %}" value="{% verbatim %}{{ d.a_isdel }}{% endverbatim %}">启用</button>
+      {% verbatim %}{{#  } else { }}{% endverbatim %}
+         <button class="layui-btn layui-btn-xs layui-btn-warm change_status" tid="{% verbatim %}{{ d.id }}{% endverbatim %}" value="{% verbatim %}{{ d.a_isdel }}{% endverbatim %}">禁用</button>
+      {% verbatim %}{{#  } }}{% endverbatim %}
+    </script>
+  <!---表格区域End-->
+
+</div>
+{% endblock %}
+
+{% block setjs %}
+<script>
+layui.extend({
+	admin: '{/}/static/back/js/admin'
+});
+layui.use(['table', 'jquery', 'admin','layer'], function() {
+	var table = layui.table,
+        layer = layui.layer,
+		$ = layui.jquery;
+
+    //表格内容
+    tableIns =
+    table.render({
+        elem: '#brandList',
+        cellMinWidth: 80,
+        url:'{% url 'brand_getdata' %}',
+        cols: [
+            [{
+                field: 'id',title: 'ID', width:80,sort: true, align: 'center'
+            },{
+                field: 'b_name',title: '品牌名称',width:120
+            },{
+                field: 'b_logo',title: '品牌Logo',templet: '#brandpic',width:140, align: 'center'
+            },{
+                field: 'b_intro',title: '商品简介'
+            },{
+                field: 't_name',title: '所属类别',width:120, align: 'center'
+            },{
+                field: 'b_isdel',title: '品牌状态',templet: '#isdel',width:100, align: 'center'
+            },{
+                field: 'b_addtime',title: '添加时间',width:200, align: 'center'
+            },{
+                field: 'operate',title: '操作',toolbar: '#operateTpl',unresize: false,width:200, align: 'center', fixed:'right'
+            }]
+        ]
+        ,event: true
+        ,page:true
+        ,page: {
+            layout: ['count', 'prev', 'page', 'next'] //自定义分页布局
+            ,groups: 10 //只显示 1 个连续页码
+            ,first: true //不显示首页
+            ,last: false //不显示尾页
+        }
+        ,limit:10
+    });
+
+    //修改品牌状态
+    $('.change_status').on('click',function(){
+        //console.log(11)
+        var a = $(this).attr('tid')
+        alert(111)
+    })
+
+    //修改商品属性信息
+    table.on('tool(brandlist)', function(obj){
+        var data = obj.data;
+        if(obj.event === 'edit'){
+            WeAdminEdit("修改品牌信息","{% url "brand_edit" %}", data.id,800,500)
+        }else if(obj.event === 'detail'){
+            WeAdminEdit("查看品牌详情","{% url "brand_detail" %}", data.id,800,500)
+        }
+    });
+
+});
+</script>
+
+{% endblock %}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

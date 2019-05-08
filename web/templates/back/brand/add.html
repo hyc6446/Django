@@ -1,0 +1,191 @@
+{% extends 'back/public/base.html' %}
+
+{% block title %}品牌添加页面{% endblock %}
+{% block mycss %}
+<link rel="stylesheet" href="/static/back/css/weadmin.css">
+<link rel="stylesheet" href="/static/back/css/style.css">
+{% endblock %}
+
+{% block currpath %}品牌添加页面{% endblock %}
+{% block contains%}
+<div class="weadmin-body">
+  <!---添加商品表单区域Start-->
+    <form class="layui-form" id="addform">
+        {% csrf_token %}
+        <div class="layui-row">
+            <div class="layui-form-item">
+                <label class="layui-form-label"><i style="color:red;">*</i>&nbsp;品牌名称</label>
+                <div class="layui-input-inline">
+                    <input type="text" name="b_name" lay-verify="required|title" autocomplete="off" placeholder="请输入品牌名称" class="layui-input">
+                </div>
+                 <div class="layui-form-mid layui-word-aux">&nbsp;&nbsp;用户名允许字母、数字、汉字！</div>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label">品牌简介</label>
+                <div class="layui-input-block">
+                    <input type="text" name="b_intro" autocomplete="off" placeholder="请输入品牌简介" class="layui-input">
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label">所属分类</label>
+                <div class="layui-input-block">
+                  <select name="p_tid" lay-verify="required">
+                    <option value="">请选择所属分类</option>
+                      {% for v in types %}
+                    <option value="{{ v.id }}">{{ v.t_name }}</option>
+                      {% empty %}
+                    <option value="">请选择所属分类</option>
+                      {% endfor %}
+                  </select>
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label">是否启用</label>
+                <div class="layui-input-block">
+                  <input type="radio" name="b_isdel" value="启用" title="启用" checked />
+                  <input type="radio" name="b_isdel" value="禁用" title="禁用" >
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label">品牌Logo</label>
+                <div class="layui-input-block">
+                    <div class="layui-upload">
+                      <button type="button" class="layui-btn" id="upgoods">
+                          <i class="fa fa-cloud-upload fa-lg" aria-hidden="true"></i>&nbsp;&nbsp;品牌图标
+                      </button>
+                        <div class="layui-upload-list">
+                            <fieldset class="layui-elem-field" style="margin:15px 0;">
+                                <legend>Logo预览图：</legend>
+                                <div class="layui-field-box">
+                                   <img class="layui-upload-img" id="showpic" style="width:132px; height:36px; background:#fdfdfd; margin:15px 0;">
+                                    <span id="demoText"></span>
+                                </div>
+                            </fieldset>
+                        </div>
+                    </div>
+                </div>
+                <input type="hidden" name="b_logo" id="b_logo" value="" />
+            </div>
+            <div class="layui-form-item">
+                <div class="layui-input-block">
+                    <button class="layui-btn" lay-submit="" lay-filter="addtype">立即提交</button>
+                    <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+                </div>
+            </div>
+        </div>
+    </form>
+  <!--添加商品表单区域End-->
+
+</div>
+{% endblock %}
+
+{% block setjs %}
+
+<script>
+layui.extend({
+	admin: '{/}/static/back/js/admin'
+});
+layui.use(['jquery','form','upload','layer','admin'], function() {
+	var $ = layui.jquery,
+		form = layui.form,
+		upload = layui.upload,
+		layer = layui.layer,
+		admin = layui.admin;
+
+    //自定义验证规则
+      form.verify({
+          title: function(value){ //value：表单的值、
+            if(!new RegExp("^[\u4e00-\u9fa5a-zA-Z0-9]+$").test(value)){
+              return '品牌名称允许字母、数字、汉字';
+            }
+          }
+
+      });
+
+ //普通图片上传
+  var uploadInst = upload.render({
+    elem: '#upgoods'
+    ,url: '{% url 'brand_upload' %}'
+    ,before: function(obj){
+      //预读本地文件
+      obj.preview(function(index, file, result){
+        $('#showpic').attr('src', result); //图片链接（base64）
+      });
+    }
+    ,done: function(res, index, upload){
+    //console.log(res.path)
+      //如果上传失败
+      if(res.code == 1){
+        $("#b_logo").attr('value',res.path)
+        return layer.msg(res.msg,{time: 2000, icon:6,offset: '20px',anim: 6});
+      }else{
+        return layer.msg(res.msg,{time: 2000, icon:5,offset: '20px',anim: 6});
+      }
+
+      //上传成功
+    }
+    ,error: function(){
+      //演示失败状态，并实现重传
+      var demoText = $('#demoText');
+      demoText.html('<span style="color: #FF5722;">上传失败</span> <a class="layui-btn layui-btn-mini demo-reload">重试</a>');
+      demoText.find('.demo-reload').on('click', function(){
+        uploadInst.upload();
+      });
+    }
+  });
+
+
+
+    //提交
+    form.on('submit(addtype)',function(data){
+        var addform = $("#addform").serialize();
+        console.log(addform)
+        //提交数据
+        $.ajax({
+            async: false,
+            data:addform,
+            type:'POST',
+            dataType: 'json',
+            success: function(result) {
+                if (result.code == 1) {
+                    layer.msg(result.msg, {time: 2000, icon:6,offset: '20px',anim: 6});
+                    location.href="{% url 'brand_list' %}"
+                }else{
+                    layer.msg(result.msg, {time: 2000, icon:2,offset: '20px',anim: 6});
+                }
+            },
+            error:function(){
+                layer.msg('数据不正确或未知错误', {time: 2000, icon:2,offset: '20px',anim: 6});
+
+            },
+            url: "{% url 'brand_add' %}"
+        });
+        return false;
+      });
+
+
+});
+</script>
+
+{% endblock %}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

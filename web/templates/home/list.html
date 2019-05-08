@@ -1,0 +1,383 @@
+{% extends 'home/public/base.html' %}
+
+{% block title %}商品列表页面{% endblock %}
+{% block mystyle %}
+<link href="/static/home/css/search-goods.css" rel="stylesheet"/>
+{% endblock %}
+
+{% block containes %}
+    <div class="wrapper router">
+        <ul class="router-nav">
+            <li><a href="{% url 'index' %}">首页</a></li>
+            <li><span class="divider"></span></li>
+            <li><span>{{ data.tname }}</span></li>
+        </ul>
+        <div class="sch-result">
+            <span class="tag">平板电视</span><span class="fl">共<span class="num">218</span>个产品</span>
+        </div>
+    </div>
+
+    <div class="filter-box">
+        <div class="wrapper">
+            <div class="sch-prop sch-brand">
+                <div class="sch-key">品牌：</div>
+                <div class="sch-value clearfix">
+                    <div class="item">
+                        <a class="inner" href="">
+                            <img src="/static/home/uploads/24.jpg" alt="" />
+                            <div class="name">美的</div>
+                        </a>
+                    </div>
+                    <div class="item">
+                        <a class="inner" href="">
+                            <img src="/static/home/uploads/25.jpg" alt="" />
+                            <div class="name">三星</div>
+                        </a>
+                    </div>
+                    <div class="item">
+                        <a class="inner" href="">
+                            <img src="/static/home/uploads/26.jpg" alt="" />
+                            <div class="name">阿迪达斯</div>
+                        </a>
+                    </div>
+                    <div class="item">
+                        <a class="inner" href="">
+                            <img src="/static/home/uploads/24.jpg" alt="" />
+                            <div class="name">美的</div>
+                        </a>
+                    </div>
+                    <div class="item">
+                        <a class="inner" href="">
+                            <img src="/static/home/uploads/25.jpg" alt="" />
+                            <div class="name">三星</div>
+                        </a>
+                    </div>
+                    <div class="item">
+                        <a class="inner" href="">
+                            <img src="/static/home/uploads/26.jpg" alt="" />
+                            <div class="name">阿迪达斯</div>
+                        </a>
+                    </div>
+                    <div class="item">
+                        <a class="inner" href="">
+                            <img src="/static/home/uploads/24.jpg" alt="" />
+                            <div class="name">美的</div>
+                        </a>
+                    </div>
+                    <div class="item">
+                        <a class="inner" href="">
+                            <img src="/static/home/uploads/25.jpg" alt="" />
+                            <div class="name">三星</div>
+                        </a>
+                    </div>
+                    <div class="item">
+                        <a class="inner" href="">
+                            <img src="/static/home/uploads/26.jpg" alt="" />
+                            <div class="name">阿迪达斯</div>
+                        </a>
+                    </div>
+                    <div class="item">
+                        <a class="inner" href="">
+                            <img src="/static/home/uploads/24.jpg" alt="" />
+                            <div class="name">美的</div>
+                        </a>
+                    </div>
+                    <div class="item">
+                        <a class="inner" href="">
+                            <img src="/static/home/uploads/25.jpg" alt="" />
+                            <div class="name">三星</div>
+                        </a>
+                    </div>
+                    <div class="item">
+                        <a class="inner" href="">
+                            <img src="/static/home/uploads/26.jpg" alt="" />
+                            <div class="name">阿迪达斯</div>
+                        </a>
+                    </div>
+                    <div class="item">
+                        <a class="inner" href="">
+                            <img src="/static/home/uploads/24.jpg" alt="" />
+                            <div class="name">美的</div>
+                        </a>
+                    </div>
+                    <div class="item">
+                        <a class="inner" href="">
+                            <img src="/static/home/uploads/25.jpg" alt="" />
+                            <div class="name">三星</div>
+                        </a>
+                    </div>
+                    <div class="item">
+                        <a class="inner" href="">
+                            <img src="/static/home/uploads/26.jpg" alt="" />
+                            <div class="name">阿迪达斯</div>
+                        </a>
+                    </div>
+                    <div class="item">
+                        <a class="inner" href="">
+                            <img src="/static/home/uploads/24.jpg" alt="" />
+                            <div class="name">美的</div>
+                        </a>
+                    </div>
+                    <div class="item">
+                        <a class="inner" href="">
+                            <img src="/static/home/uploads/25.jpg" alt="" />
+                            <div class="name">三星</div>
+                        </a>
+                    </div>
+                    <div class="item">
+                        <a class="inner" href="">
+                            <img src="/static/home/uploads/26.jpg" alt="" />
+                            <div class="name">阿迪达斯</div>
+                        </a>
+                    </div>
+                    <div class="item">
+                        <a class="inner" href="">
+                            <img src="/static/home/uploads/24.jpg" alt="" />
+                            <div class="name">美的</div>
+                        </a>
+                    </div>
+                    <div class="item">
+                        <a class="inner" href="">
+                            <img src="/static/home/uploads/25.jpg" alt="" />
+                            <div class="name">三星</div>
+                        </a>
+                    </div>
+                    <div class="item">
+                        <a class="inner" href="">
+                            <img src="/static/home/uploads/26.jpg" alt="" />
+                            <div class="name">阿迪达斯</div>
+                        </a>
+                    </div>
+                    <div class="item">
+                        <a class="inner" href="">
+                            <img src="/static/home/uploads/24.jpg" alt="" />
+                            <div class="name">美的</div>
+                        </a>
+                    </div>
+                    <div class="item">
+                        <a class="inner" href="">
+                            <img src="/static/home/uploads/25.jpg" alt="" />
+                            <div class="name">三星</div>
+                        </a>
+                    </div>
+                    <div class="item">
+                        <a class="inner" href="">
+                            <img src="/static/home/uploads/26.jpg" alt="" />
+                            <div class="name">阿迪达斯</div>
+                        </a>
+                    </div>
+                    <div class="item">
+                        <a class="inner" href="">
+                            <img src="/static/home/uploads/25.jpg" alt="" />
+                            <div class="name">三星</div>
+                        </a>
+                    </div>
+                    <div class="item">
+                        <a class="inner" href="">
+                            <img src="/static/home/uploads/26.jpg" alt="" />
+                            <div class="name">阿迪达斯</div>
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <div class="sch-prop clearfix">
+                <div class="sch-key">价格：</div>
+                <div class="sch-value clearfix">
+                    <a href="">1-1999</a><a href="">2000-3999</a><a href="">4000-5999</a><a href="">6000-9999</a><a href="">10000-14999</a><a href="">15000以上</a>
+                </div>
+            </div>
+            <div class="sch-prop clearfix">
+                <div class="sch-key">选购指数：</div>
+                <div class="sch-value clearfix">
+                    <a href="">8分以上 </a><a href=""> 8-7 </a><a href=""> 7-6  </a><a href="">6-5 </a><a href="">5分以下</a>
+                </div>
+            </div>
+            <div class="sch-prop clearfix">
+                <div class="sch-key">屏幕尺寸：</div>
+                <div class="sch-value clearfix">
+                    <a href="">70英寸及以上</a><a href="">70英寸及以上</a><a href="">70英寸及以上</a><a href="">70英寸及以上</a><a href="">70英寸及以上</a><a href="">70英寸及以上</a>
+                    <a href="">70英寸及以上</a><a href="">70英寸及以上</a><a href="">70英寸及以上</a><a href="">70英寸及以上</a><a href="">70英寸及以上</a><a href="">70英寸及以上</a>
+                </div>
+            </div>
+            <div class="sch-prop clearfix">
+                <div class="sch-key">分辨率：</div>
+                <div class="sch-value clearfix">
+                    <a href="">4K超高清 </a><a href="">4K超高清 </a><a href="">4K超高清 </a>
+                </div>
+            </div>
+            <div class="sch-prop clearfix">
+                <div class="sch-key">能效等级：</div>
+                <div class="sch-value clearfix">
+                    <a href="">一级能效</a><a href="">一级能效</a><a href="">一级能效</a>
+                </div>
+            </div>
+            <div class="sch-prop clearfix">
+                <div class="sch-key">大家说：</div>
+                <div class="sch-value clearfix">
+                    <a href="">电视不错</a><a href="">送货快</a><a href="">画面清晰</a><a href="">价格便宜</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="sg-main wrapper">
+        <div class="sg-content">
+            <div class="rank-menu">
+                <div class="rank">
+                    <div class="r-item"><a href="">销量</a></div>
+                    <div class="r-item"><a class="active" href="">价格<span class="sort-arrow"></span></a></div>
+                    <div class="r-item"><a href="">人气</a></div>
+                    <div class="r-item">
+                        <a href="">上架时间<span class="sort-arrow desc"></span></a>
+                        <div class="sch">
+                            <input type="text" class="txtin" /><span class="divider">-</span><input type="text" class="txtin" /><button class="tj ui-btn-theme">确定</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="help">
+                    <label class="check"><input type="checkbox" name="" id="" />仅显示有货商品</label>
+                    <span class="info">共<span>12个</span>商品</span>
+                    <div class="r-page">
+                        <a class="prev" href="">上一页</a><a class="next" href="">下一页</a>
+                    </div>
+                </div>
+            </div>
+            <div class="sg-list clearfix">
+                {% for v in data.data %}
+                <div class="col col-3">
+                    <div class="item">
+                        <div class="inner">
+                            {% for p in v.pic %}
+                            <a href="{% url 'content' v.id %}"><img class="figure" src="{{ p.p_pic }}" alt="" /></a>
+                            {% endfor %}
+                            <a href="goods-detail.html">
+                                <div class="name">{{ v.g_name }}</div>
+                                <div class="price">{{ v.g_price }}</div>
+                            </a>
+                            <a class="act" href=""><i class="iconfont icon-cart"></i>加入购物车</a>
+                        </div>
+                    </div>
+                </div>
+
+                {% endfor %}
+            </div>
+            <div class="pages">
+                <a class="page prev" href="">上一页</a>
+                <a class="page" href="">1</a>
+                <span class="cur-page">2</span>
+                <a class="page" href="">3</a>
+                <a class="page" href="">4</a>
+                <i class="page-split">...</i>
+                <a class="page" href="">71</a>
+                <a class="page next" href="">下一页</a>
+            </div>
+        </div>
+        <div class="sg-aside">
+            <div class="sg-aside-tit">
+                热销产品
+            </div>
+            <div class="shop-hot">
+                <div class="item">
+                    <a href=""><img class="figure" src="/static/home/uploads/33.jpg" alt="" /></a>
+                    <div class="p-name"><a href="">飞利浦（PHILIPS）32PHF5021/T3 32英寸液</a></div>
+                    <div class="price">¥5999.00</div>
+                </div>
+                <div class="item">
+                    <a href=""><img class="figure" src="/static/home/uploads/33.jpg" alt="" /></a>
+                    <div class="p-name"><a href="">飞利浦（PHILIPS）32PHF5021/T3 32英寸液</a></div>
+                    <div class="price">¥5999.00</div>
+                </div>
+                <div class="item">
+                    <a href=""><img class="figure" src="/static/home/uploads/33.jpg" alt="" /></a>
+                    <div class="p-name"><a href="">飞利浦（PHILIPS）32PHF5021/T3 32英寸液</a></div>
+                    <div class="price">¥5999.00</div>
+                </div>
+                <div class="item">
+                    <a href=""><img class="figure" src="/static/home/uploads/33.jpg" alt="" /></a>
+                    <div class="p-name"><a href="">飞利浦（PHILIPS）32PHF5021/T3 32英寸液</a></div>
+                    <div class="price">¥5999.00</div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+
+{% block myjs %}
+<link rel="stylesheet" href="/static/home/js/icheck/style.css"/>
+<script src="/static/home/js/icheck/icheck.min.js"></script>
+<script>
+
+    $('.check input').iCheck({
+        checkboxClass: 'cart-checkbox'
+    });
++function () {
+    var dftLine=4,
+    dftH=50; //这里品牌的比普通的一行要高，所以用品牌的做标准行高
+    //
+    $('.filter-box .sch-value').each(function(index, el) {
+        var h=$(this).height();
+        if (h>dftH) {
+            $('<a class="prop-toggle"  data-action="prop-toggle" href="javascript:;">查看更多<i></i></a>').insertAfter($(this));
+            $(this).addClass('slideup');
+        }
+    });
+    $('.filter-box .sch-prop').each(function(index, el) {
+        index+=1;
+        if (index==dftLine) {
+            $('.filter-box').append('<span class="filter-toggle" data-action="filter-toggle"><span class="tohide">收起<i></i></span><span class="toshow">更多<i></i></span></span>');
+        }
+        if (index>dftLine) {
+            $(this).addClass('hide');
+        }
+
+    });
+    zAction.add({
+        'filter-toggle':function () {
+            $(this).toggleClass('on').parent().toggleClass('on');
+        },
+        'prop-toggle':function () {
+            $(this).toggleClass('on').prev('.sch-value').toggleClass('slideup')
+        }
+    });
+
+}();
+
++function () {
+        var bigH=$('.side-category').height();
+        $(window).on('scroll resize load',function () {
+            var sTop=$(this).scrollTop(),
+            valve=$('.filter-box').offset().top+$('.filter-box').height(),
+            wH=$(this).height();
+
+            //控制导航显示
+            if (sTop>valve) {
+                $('.side-category').show();
+            }
+            else {
+                $('.side-category').hide();
+            }
+        })
+    }();
+
+</script>
+{% endblock %}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,200 @@
+{% extends 'back/public/base.html' %}
+
+{% block title %}会员列表{% endblock %}
+{% block mycss %}
+<link rel="stylesheet" href="/static/back/css/weadmin.css">
+{% endblock %}
+
+{% block currpath %}会员列表{% endblock %}
+{% block contains%}
+<div class="weadmin-body">
+  <!---搜索区域Start-->
+    <div class="layui-row">
+        <form action="" method="get" class="layui-form layui-col-md12 we-search" lay-filter="searchform" id="searchform">
+            会员搜索：
+            <div class="layui-inline">
+                <input type="text" class="layui-input" id="date" name="u_addtime" placeholder="按注册时间">
+            </div>
+            <div class="layui-inline">
+                <input type="text" name="username" placeholder="按用户名搜索" autocomplete="off" class="layui-input">
+            </div>
+            <div class="layui-inline">
+                <div class="layui-inline">
+                  <div class="layui-input-inline">
+                    <select name="u_status">
+                      <option value="">状态</option>
+                      <option value="已审核">已审核</option>
+                      <option value="未审核">未审核</option>
+                    </select>
+                  </div>
+                </div>
+            </div>
+            <div class="layui-inline">
+                <div class="layui-inline">
+                  <div class="layui-input-inline">
+                    <select name="u_level">
+                      <option value="">会员分级</option>
+                      <option value="1">普通会员</option>
+                      <option value="2">中级会员</option>
+                      <option value="3">高级会员</option>
+                      <option value="4">顶级会员</option>
+                    </select>
+                  </div>
+                </div>
+            </div>
+
+            <button id="btnSearch" class="layui-btn" lay-submit="" lay-filter="search"><i class="layui-icon">&#xe615;查询</i></button>
+        </form>
+    </div>
+
+  <!---表格区域Start-->
+
+    <table class="layui-table layui-hide" id="memberList" lay-filter="userlist"></table>
+    <!--操作模块-->
+    <script type="text/html" id="operateTpl">
+        <a title="查看会员信息" class="layui-btn layui-btn-normal layui-btn-xs" href="javascript:;" lay-event="detail">
+            <i class="fa fa-eye" aria-hidden="true"></i>预览
+        </a>
+    </script>
+    <script type="text/html" id="check">
+      <input type="checkbox" name="status" value="{% verbatim %}{{ d.id }}{% endverbatim %}" lay-skin="switch" lay-text="ON|OFF" lay-filter="change_status" {% verbatim %}{{ d.u_status == '已审核' ? 'checked' : '' }}{% endverbatim %} />
+    </script>
+    <!--会员等级样式-->
+    <script type="text/html" id="level">
+      {% verbatim %}{{#  if(d.u_level_id === 1){ }}{% endverbatim %}
+        {% verbatim %}{{ d.level_name }}{% endverbatim %}
+      {% verbatim %}{{#  } }}{% endverbatim %}
+      {% verbatim %}{{#  if(d.u_level_id === 2){ }}{% endverbatim %}
+        <span style="color: #009688;">{% verbatim %}{{ d.level_name }}{% endverbatim %}</span>
+      {% verbatim %}{{#  } }}{% endverbatim %}
+      {% verbatim %}{{#  if(d.u_level_id === 3){ }}{% endverbatim %}
+        <span style="color: #FFB800;">{% verbatim %}{{ d.level_name }}{% endverbatim %}</span>
+      {% verbatim %}{{#  } }}{% endverbatim %}
+      {% verbatim %}{{#  if(d.u_level_id === 4){ }}{% endverbatim %}
+        <span style="color: #FF5722;">{% verbatim %}{{ d.level_name }}{% endverbatim %}</span>
+      {% verbatim %}{{#  } }}{% endverbatim %}
+    </script>
+    <!--性别显示样式-->
+    <script type="text/html" id="sex">
+      {% verbatim %}{{#  if(d.sex === '女'){ }}{% endverbatim %}
+        <span style="color: #e63e50;">{% verbatim %}{{ d.sex }}{% endverbatim %}</span>
+      {% verbatim %}{{#  } else { }}{% endverbatim %}
+        {% verbatim %}{{ d.sex }}{% endverbatim %}
+      {% verbatim %}{{#  } }}{% endverbatim %}
+    </script>
+
+  <!---表格区域End-->
+
+</div>
+{% endblock %}
+
+{% block setjs %}
+<script>
+layui.extend({
+	admin: '{/}/static/back/js/admin'
+});
+layui.use(['table', 'jquery','form', 'admin','laydate','laytpl'], function() {
+	var table = layui.table,
+		$ = layui.jquery,
+		laydate = layui.laydate,
+		form = layui.form,
+		admin = layui.admin,
+		laytpl = layui.laytpl;
+
+    //日期范围
+    laydate.render({
+        elem: '#date'
+        //,range: true
+    });
+
+    //表格内容
+	table.render({
+		elem: '#memberList',
+		cellMinWidth: 80,
+		cols: [
+			[{
+				field: 'id',title: 'id',sort: true
+			}, {
+				field: 'username',title: '用户名'
+			}, {
+				field: 'sex',title: '性别',sort: true,templet: '#sex'
+			}, {
+				field: 'age',title: '年龄',sort: true
+			}, {
+				field: 'u_address',title: '地址'
+			}, {
+				field: 'level_name',title: '等级',unresize: true,templet: '#level'
+			}, {
+				field: 'u_status',title: '状态',unresize: true,templet: '#check'
+			}, {
+				field: 'u_addtime',title: '注册时间',unresize: true,sort: true
+			}, {
+				field: 'operate',title: '操作',toolbar: '#operateTpl',unresize: true
+			}]
+		],
+		data: {{ data|safe }},
+		event: true,
+		loading: true,
+        page: {
+          layout: ['count', 'prev', 'page', 'next']
+          ,groups: 5 //只显示 1 个连续页码
+          ,first: true //不显示首页
+          ,last: true //不显示尾页
+        }
+	});
+
+    //重载
+	$(function(){
+		form.render();
+	});
+
+    //修改状态
+    form.on('switch(change_status)', function(obj){
+        $.get('{% url "changestatus"%}',{'id':this.value,'status':obj.elem.checked},function(data){
+            layer.msg(data['msg'], {time: 1000, icon:6,offset: '20px',anim: 6});
+        })
+    });
+    //预览会员信息
+    table.on('tool(userlist)', function(obj){
+        var data = obj.data;
+        if(obj.event === 'detail'){
+          WeAdminEdit("查看会员信息","{% url "detail" %}", data.id, 700)
+        }
+    });
+
+    //查询按钮
+    $('#btnSearch').on('click', function() {
+        index = layer.load(1);//开启进度条
+        var searchform = $("#searchform").serialize();//查询页面表单ID
+        table.reload('searchID', {
+            where : searchform
+        });
+    });
+
+});
+
+
+</script>
+
+{% endblock %}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

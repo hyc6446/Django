@@ -1,0 +1,226 @@
+{% extends 'back/public/basetop.html' %}
+
+{% block title %}会员信息{% endblock %}
+{% block mycss %}
+<link rel="stylesheet" href="/static/back/css/weadmin.css">
+<link rel="stylesheet" href="/static/back/css/style.css">
+{% endblock %}
+
+{% block currpath %}会员信息{% endblock %}
+{% block contains%}
+<div class="weadmin-body">
+  <!---信息区域Start-->
+
+        <div class="layui-row layui-form-pane">
+            <div class="layui-col-xs12 layui-col-sm12 layui-col-md12">
+                <div class="layui-form-item">
+                    <label class="layui-form-label">商品名称</label>
+                    <div class="layui-input-block">
+                        <input type="text" class="layui-input title" value="{{ data.g_name }}" disabled="">
+                    </div>
+                </div>
+            </div>
+            <div class="layui-col-xs12 layui-col-sm12 layui-col-md12">
+                <div class="layui-form-item">
+                    <label class="layui-form-label">商品标题</label>
+                    <div class="layui-input-block">
+                        <input type="text" class="layui-input title" value="{{ data.g_title }}" disabled="">
+                    </div>
+                </div>
+            </div>
+            <div class="layui-col-xs12 layui-col-sm6 layui-col-md4 layui-col-lg3">
+                <div class="layui-form-item">
+                    <label class="layui-form-label">商品价格</label>
+                    <div class="layui-input-block">
+                        <input type="text" class="layui-input title" value="{{ data.g_price }}" disabled="">
+                    </div>
+                </div>
+            </div>
+            <div class="layui-col-xs12 layui-col-sm6 layui-col-md4 layui-col-lg3">
+                <div class="layui-form-item">
+                    <label class="layui-form-label">商品折扣</label>
+                    <div class="layui-input-block">
+                        <input type="text" class="layui-input title" value="{{ data.g_saleprice }}" disabled="">
+                    </div>
+                </div>
+            </div>
+            <div class="layui-col-xs12 layui-col-sm6 layui-col-md4 layui-col-lg3">
+                <div class="layui-form-item">
+                    <label class="layui-form-label">商品类型</label>
+                    <div class="layui-input-block">
+                        <input type="text" class="layui-input title" value="{% if data.g_type == 0 %}普通{% elif data.g_type == 1 %}新品{% elif data.g_type == 2 %}热卖{% endif %}" disabled="">
+                    </div>
+                </div>
+            </div>
+            <div class="layui-col-xs12 layui-col-sm6 layui-col-md4 layui-col-lg3">
+                <div class="layui-form-item">
+                    <label class="layui-form-label">商品总量</label>
+                    <div class="layui-input-block">
+                        <input type="text" class="layui-input title" value="{{ data.g_nums }}" disabled="">
+                    </div>
+                </div>
+            </div>
+            <div class="layui-col-xs12 layui-col-sm6 layui-col-md4 layui-col-lg3">
+                <div class="layui-form-item">
+                    <label class="layui-form-label">商品库存</label>
+                    <div class="layui-input-block">
+                        <input type="text" class="layui-input title" value="{{ data.g_invnum }}" disabled="">
+                    </div>
+                </div>
+            </div>
+            <div class="layui-col-xs12 layui-col-sm6 layui-col-md4 layui-col-lg3">
+                <div class="layui-form-item">
+                    <label class="layui-form-label">售卖数量</label>
+                    <div class="layui-input-block">
+                        <input type="text" class="layui-input title" value="{{ data.g_sellnum }}" disabled="">
+                    </div>
+                </div>
+            </div>
+
+            <div class="layui-col-xs12 layui-col-sm6 layui-col-md4 layui-col-lg3">
+                <div class="layui-form-item">
+                    <label class="layui-form-label">商品颜色</label>
+                    <div class="layui-input-block">
+                        <input type="text" class="layui-input title" value="{{ data.goodsinfo.i_color }}" disabled="">
+                    </div>
+                </div>
+            </div>
+            <div class="layui-col-xs12 layui-col-sm6 layui-col-md4 layui-col-lg3">
+                <div class="layui-form-item">
+                    <label class="layui-form-label">商品尺寸</label>
+                    <div class="layui-input-block">
+                        <input type="text" class="layui-input title" value="{{ data.goodsinfo.i_size }}" disabled="">
+                    </div>
+                </div>
+            </div>
+            <div class="layui-col-xs12 layui-col-sm6 layui-col-md4 layui-col-lg3">
+                <div class="layui-form-item">
+                    <label class="layui-form-label">商品品牌</label>
+                    <div class="layui-input-block">
+                        <input type="text" class="layui-input title" value="{{ data.goodsinfo.i_pinpai }}" disabled="">
+                    </div>
+                </div>
+            </div>
+
+
+            <div class="layui-col-xs12 layui-col-sm6 layui-col-md4 layui-col-lg3">
+                <div class="layui-form-item">
+                    <label class="layui-form-label">添加时间</label>
+                    <div class="layui-input-block">
+                        <input type="text" class="layui-input title" value="{{ data.g_addtime | date:'Y-m-d H:i:s' }}" disabled="">
+                    </div>
+                </div>
+            </div>
+            <form class="layui-form">
+            <div class="layui-col-xs12 layui-col-sm6 layui-col-md4 layui-col-lg3">
+                <div class="layui-form-item">
+                    <label class="layui-form-label">是否包邮</label>
+                    <div class="layui-input-block">
+                      <input type="radio"  value="包邮" title="包邮" {% if data.g_mall == '包邮' %}checked{% else %}disabled{% endif %} >
+                      <input type="radio"  value="不包邮" title="不包邮" {% if data.g_mall == '不包邮' %}checked{% else %}disabled{% endif %} >
+                    </div>
+                </div>
+            </div>
+            <div class="layui-col-xs12 layui-col-sm6 layui-col-md4 layui-col-lg3">
+                <div class="layui-form-item">
+                    <label class="layui-form-label">是否售卖</label>
+                    <div class="layui-input-block">
+                      <input type="radio" value="是" title="售卖" {% if data.g_isdel == 1 %} checked{% else %} disabled {% endif %} >
+                      <input type="radio" value="否" title="下架" {% if data.g_isdel == 0 %} checked{% else %} disabled {% endif %} >
+                    </div>
+                </div>
+            </div>
+            <div class="layui-col-xs12">
+                <div class="layui-form-item goods_pic">
+                    <label class="layui-form-label">商品展示</label>
+                    <div class="layui-input-block" id="layer-photos-demo">
+                            {% for v in data.pictures_set.all reversed  %}
+                                {% if forloop.counter < 6 %}
+                                    <div class="layui-col-xs6 layui-col-sm3 layui-col-md1 showgoods">
+                                        <img src="{{ v.p_pic }}" alt="{{ v.p_name }}" layer-pid="{{ v.id }}" layer-src="{{ v.p_pic }}" title="选中设为主图" width="80" height="80" /><br>
+                                        <input type="radio" name="p_cover"  value="{{ v.id }}" {% if v.p_cover == 1 %} checked{% else %} disabled {% endif %} />
+                                    </div>
+                                {% endif %}
+                            {% empty %}
+                                <div style="line-height:40px;">&nbsp;&nbsp;暂无商品图片！</div>
+                            {% endfor %}
+                    </div>
+                </div>
+            </div>
+            <div class="layui-col-xs12 layui-col-sm6 layui-col-md12 layui-col-lg12">
+                <div class="layui-form-item">
+                    <label class="layui-form-label">商品简介</label>
+                    <div class="layui-input-block">
+                        <input type="text" class="layui-input title" value="{{ data.g_intro }}" disabled="">
+                    </div>
+                </div>
+            </div>
+            <div class="layui-col-xs12 layui-col-sm6 layui-col-md12 layui-col-lg12">
+                  <div class="layui-form-item layui-form-text">
+                    <label class="layui-form-label">商品详情</label>
+                    <div class="layui-input-block">
+                      <textarea class="layui-textarea layui-hide" name="i_info" lay-verify="content" id="goods_detail" disabled>{{ data.goodsinfo.i_info }}</textarea>
+                    </div>
+                  </div>
+            </div>
+         </form>
+
+
+
+
+  <!---会员信息区域End-->
+</div>
+
+{% endblock %}
+
+{% block setjs %}
+<script>
+layui.extend({
+	admin: '{/}/static/back/js/admin'
+});
+layui.use(['jquery','form','layer','layedit'], function() {
+	var $ = layui.jquery,
+	    layer = layui.layer,
+	    layedit = layui.layedit,
+		form = layui.form;
+
+
+    layer.ready(function(){
+        layer.photos({
+            photos: '#layer-photos-demo'
+        });
+
+    });
+
+    //配置富文本编辑器
+    layedit.build('goods_detail',{
+        height: 400
+    });
+});
+
+//图片展示示例
+
+
+</script>
+{% endblock %}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

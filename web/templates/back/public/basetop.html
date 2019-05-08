@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <title>{% block title %}{% endblock %}</title>
+
+    <link rel="stylesheet" href="/static/back/css/font.css">
+    <link rel="stylesheet" href="/static/layui/css/layui.css">
+    <link href="//netdna.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+    {% block mycss %}{% endblock %}
+    <script src="/static/layui/layui.js" charset="utf-8"></script>
+
+
+</head>
+<body class="layui-layout-body">
+{% block contains%}
+
+{% endblock %}
+<div class="layui-footer"></div>
+{% block setjs %}
+
+{% endblock %}
+</body>
+</html>

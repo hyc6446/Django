@@ -1,0 +1,195 @@
+{% extends 'back/public/base.html' %}
+
+{% block title %}管理员列表{% endblock %}
+{% block mycss %}
+<link rel="stylesheet" href="/static/back/css/weadmin.css">
+<style>
+  .layui-table-cell{
+    height:50px;
+    line-height:50px;
+  }
+</style>
+{% endblock %}
+
+{% block currpath %}管理员列表{% endblock %}
+{% block contains%}
+<div class="weadmin-body">
+  <!---搜索区域Start-->
+    <!--<div class="layui-row">-->
+        <!--<form action="" method="get" class="layui-form layui-col-md12 we-search" lay-filter="searchform" id="searchform">-->
+            <!--类别搜索：-->
+            <!--<div class="layui-inline">-->
+                <!--<input type="text" name="t_name" placeholder="按栏目名搜索" autocomplete="off" class="layui-input">-->
+            <!--</div>-->
+            <!--<div class="layui-inline">-->
+                <!--<div class="layui-inline">-->
+                  <!--<div class="layui-input-inline">-->
+                    <!--<select name="t_pid">-->
+                      <!--<option value="">栏目级别</option>-->
+                      <!--<option value="0">顶级栏目</option>-->
+                      <!--<option value="1">一级栏目</option>-->
+                      <!--<option value="2">二级栏目</option>-->
+                      <!--<option value="3">三级栏目</option>-->
+                    <!--</select>-->
+                  <!--</div>-->
+                <!--</div>-->
+            <!--</div>-->
+
+            <!--<button id="btnSearch" class="layui-btn" lay-submit="" lay-filter="search"><i class="layui-icon">&#xe615;查询</i></button>-->
+        <!--</form>-->
+    <!--</div>-->
+    <div class="weadmin-block userTable">
+        <button class="layui-btn" data-type="check" onclick="WeAdminShow('添加管理员','{% url 'auth_add' %}')"><i class="fa fa-plus-circle fa-lg layui-anim" aria-hidden="true"></i>&nbsp;&nbsp;添加管理员</button>
+        <button class="layui-btn layui-btn-danger" lay-filter="trashlist"><i class="fa fa-trash fa-lg" aria-hidden="true"></i>&nbsp;&nbsp;回收站</button>
+        <!--<span class="fr" style="line-height:40px">共有数据：{{ count }}  条</span>-->
+    </div>
+  <!---搜索区域End-->
+
+  <!---表格区域Start-->
+
+    <table class="layui-table layui-hide" id="typeList" lay-filter="typelist"></table>
+    <!--操作模块-->
+    <script type="text/html" id="operateTpl">
+        <a title="查看栏目信息" class="layui-btn layui-btn-normal layui-btn-xs" href="javascript:;" lay-event="detail">
+            <i class="fa fa-eye" aria-hidden="true"></i>
+            查看
+        </a>
+        <a title="编辑栏目信息" class="layui-btn layui-btn-xs" href="javascript:;" lay-event="edit">
+            <i class="fa fa-edit" aria-hidden="true"></i>
+            编辑
+        </a>
+    </script>
+    <script type="text/html" id="icon">
+      <div style="height:100px;">
+
+        <img src="{% verbatim %}{{ d.icon }}{% endverbatim %}" alt="{% verbatim %}{{ d.username }}{% endverbatim %}" title="{% verbatim %}{{ d.username }}{% endverbatim %}" width="50" />
+      </div>
+    </script>
+    <script type="text/html" id="isdel">
+      {% verbatim %}{{#  if(d.is_superuser === true ){ }}{% endverbatim %}
+         <button class="layui-btn layui-btn-xs layui-bg-red">超级管理员</button>
+      {% verbatim %}{{#  } else { }}{% endverbatim %}
+         <button class="layui-btn layui-btn-xs">普通管理员</button>
+      {% verbatim %}{{#  } }}{% endverbatim %}
+    </script>
+  <!---表格区域End-->
+
+</div>
+{% endblock %}
+
+{% block setjs %}
+<script>
+layui.extend({
+	admin: '{/}/static/back/js/admin'
+});
+layui.use(['table', 'jquery','form', 'admin'], function() {
+	var table = layui.table,
+		$ = layui.jquery,
+		form = layui.form,
+		admin = layui.admin;
+
+    //表格内容
+    var tableIns =
+	table.render({
+		elem: '#typeList',
+		cellMinWidth: 80,
+		url:'{% url 'auth_getdata' %}',
+		cols: [
+			[{
+				field: 'id',title: 'id',sort: true, align: 'center'
+			}, {
+				field: 'icon',title: '用户头像', align: 'center',templet: '#icon'
+			}, {
+				field: 'username',title: '用户名'
+			}, {
+				field: 'email',title: '用户邮箱'
+			}, {
+				field: 'is_superuser',title: '用户状态',templet: '#isdel',sort: true, align: 'center'
+			}, {
+				field: 'date_joined',title: '添加时间',sort: true, align: 'center'
+			},{
+				field: 'operate',title: '操作',toolbar: '#operateTpl',unresize: true, align: 'center'
+			}]
+		],
+		loading: true,
+        page:true
+        ,page: {
+            layout: ['count', 'prev', 'page', 'next'] //自定义分页布局
+            ,groups: 10 //只显示 1 个连续页码
+            ,first: true //不显示首页
+            ,last: false //不显示尾页
+        }
+        ,limit:10
+	});
+
+    //重载
+	$(function(){
+		form.render();
+	});
+
+
+    //修改状态
+    function change_status(){
+        $('.change_status').on('click', function() {
+            var id = $(this).attr('tid');
+            var status = $(this).val();
+            var $th = $(this)
+            $.post("{% url 'type_change_status' %}",{id:id,status:status},function(result){
+                if(result.code == 1){
+                    layer.msg(result.msg, {time: 1000, icon:6,offset: '20px',anim: 6});
+                    $th.val(result.pid)
+                    if(result.pid == 1){
+                        $th.removeClass('layui-bg-red').text('启用');
+                    }else{
+
+                        $th.addClass('layui-bg-red').text('禁用');
+                    }
+
+                }else{
+                    layer.msg(result.msg, {time: 1000, icon:5,offset: '20px',anim: 6});
+                }
+            })
+        });
+    }
+
+
+    //预览会员信息
+    table.on('tool(typelist)', function(obj){
+        var data = obj.data;
+        if(obj.event === 'detail'){
+            WeAdminEdit("查看栏目信息","{% url "typedetail" %}", data.id, 700,500)
+        }else if(obj.event === 'edit'){
+            WeAdminEdit("修改栏目信息","{% url "typeedit" %}", data.id, 700,500)
+        }
+    });
+
+
+
+
+});
+
+
+</script>
+
+{% endblock %}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

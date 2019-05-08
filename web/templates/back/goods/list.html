@@ -1,0 +1,145 @@
+{% extends 'back/public/base.html' %}
+
+{% block title %}商品列表{% endblock %}
+{% block mycss %}
+<link rel="stylesheet" href="/static/back/css/weadmin.css">
+{% endblock %}
+
+{% block currpath %}商品列表{% endblock %}
+{% block contains%}
+<div class="weadmin-body">
+  <!---搜索区域Start-->
+    <div class="weadmin-block userTable">
+        <a href="{% url 'goodsadd' %}" class="layui-btn" ><i class="fa fa-plus-circle fa-lg layui-anim" aria-hidden="true"></i>&nbsp;&nbsp;添加商品</a>
+        <!--<button class="layui-btn" data-type="check" onclick="WeAdminShow('添加商品属性','{% url 'goods_trait_add' %}',800,400)"><i class="fa fa-plus-circle fa-lg layui-anim" aria-hidden="true"></i>&nbsp;&nbsp;添加商品</button>-->
+        <button class="layui-btn layui-btn-danger" lay-filter="trashlist"><i class="fa fa-trash fa-lg" aria-hidden="true"></i>&nbsp;&nbsp;回收站</button>
+        <!--<span class="fr" style="line-height:40px">共有数据：{{ count }}  条</span>-->
+    </div>
+  <!---搜索区域End-->
+
+  <!---表格区域Start-->
+
+    <table class="layui-table layui-hide" id="goodsList" lay-filter="goodslist"></table>
+    <!--操作模块-->
+    <script type="text/html" id="operateTpl">
+        <a title="查看商品详情" class="layui-btn layui-btn-normal layui-btn-xs" href="javascript:;" lay-event="detail">
+            <i class="fa fa-eye" aria-hidden="true"></i>&nbsp;查看
+        </a>
+        <a title="编辑商品信息" class="layui-btn layui-btn-xs" href="javascript:;" lay-event="edit">
+            <i class="fa fa-edit" aria-hidden="true"></i>&nbsp;修改
+        </a>
+        <a title="商品图片选择" class="layui-btn layui-bg-cyan layui-btn-xs" href="javascript:;" lay-event="pic">
+            <i class="fa fa-edit" aria-hidden="true"></i>&nbsp;图片
+        </a>
+    </script>
+    <!--商品类别-->
+    <script type="text/html" id="type">
+      {% verbatim %}{{#  if(d.g_type === 0){ }}{% endverbatim %}
+         <a class="layui-btn layui-btn-xs layui-btn-normal">普通</a>
+      {% verbatim %}{{#  } else if(d.g_type === 1){ }}{% endverbatim %}
+         <a class="layui-btn layui-btn-xs">新品</a>
+      {% verbatim %}{{#  } else if(d.g_type === 2){ }}{% endverbatim %}
+         <a class="layui-btn layui-btn-xs layui-btn-danger">热卖</a>
+
+      {% verbatim %}{{#  } }}{% endverbatim %}
+    </script>
+    <!--商品状态-->
+    <script type="text/html" id="isdel">
+      {% verbatim %}{{#  if(d.g_isdel === 0){ }}{% endverbatim %}
+         <button class="layui-btn layui-btn-xs layui-btn-primary" tid="{% verbatim %}{{ d.id }}{% endverbatim %}" value="{% verbatim %}{{ d.a_isdel }}{% endverbatim %}">下架</button>
+      {% verbatim %}{{#  } else { }}{% endverbatim %}
+         <button class="layui-btn layui-btn-xs layui-btn-warm" tid="{% verbatim %}{{ d.id }}{% endverbatim %}" value="{% verbatim %}{{ d.a_isdel }}{% endverbatim %}">上架</button>
+      {% verbatim %}{{#  } }}{% endverbatim %}
+    </script>
+  <!---表格区域End-->
+
+</div>
+{% endblock %}
+
+{% block setjs %}
+<script>
+layui.extend({
+	admin: '{/}/static/back/js/admin'
+});
+layui.use(['table', 'jquery', 'admin'], function() {
+	var table = layui.table,
+		$ = layui.jquery;
+
+
+    //表格内容
+    tableIns =
+    table.render({
+        elem: '#goodsList',
+        cellMinWidth: 80,
+        url:'{% url 'getgoods' %}',
+        cols: [
+            [{
+                field: 'id',title: 'ID', width:80,sort: true, align: 'center'
+            },{
+                field: 'g_name',title: '商品名称'
+            },{
+                field: 'g_price',title: '商品价格',width:120, align: 'center'
+            },{
+                field: 'g_type',title: '商品类型',templet: '#type',width:120, align: 'center'
+            },{
+                field: 't_name',title: '所属种类', align: 'center'
+            },{
+                field: 'g_isdel',title: '商品状态',templet: '#isdel',width:120, align: 'center'
+            },{
+                field: 'g_nums',title: '商品总数',sort: true,width:120, align: 'center'
+            },{
+                field: 'g_invnum',title: '商品库存',sort: true,width:120, align: 'center'
+            },{
+                field: 'g_addtime',title: '添加时间',sort: true
+            },{
+                field: 'operate',title: '操作',toolbar: '#operateTpl',unresize: false, align: 'center', fixed:'right'
+            }]
+        ],
+        event: true
+        ,page:true
+        ,page: {
+            layout: ['count', 'prev', 'page', 'next'] //自定义分页布局
+            ,groups: 10 //只显示 1 个连续页码
+            ,first: true //不显示首页
+            ,last: false //不显示尾页
+        }
+        ,limit:10
+    });
+
+    //修改商品属性信息
+    table.on('tool(goodslist)', function(obj){
+        var data = obj.data;
+        if(obj.event === 'edit'){
+            WeAdminEdit("修改商品属性信息","{% url "goodsedit" %}", data.id)
+        }else if(obj.event === 'detail'){
+            WeAdminEdit("查看商品属性信息","{% url "goodsdetail" %}", data.id)
+        }else if(obj.event === 'pic'){
+            WeAdminEdit("商品图片","{% url "goodspicture" %}", data.id,800)
+        }
+    });
+
+});
+</script>
+
+{% endblock %}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

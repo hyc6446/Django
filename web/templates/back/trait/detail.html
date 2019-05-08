@@ -1,0 +1,81 @@
+{% extends 'back/public/basetop.html' %}
+
+{% block title %}会员信息{% endblock %}
+{% block mycss %}
+<link rel="stylesheet" href="/static/back/css/weadmin.css">
+{% endblock %}
+
+{% block currpath %}会员信息{% endblock %}
+{% block contains%}
+<div class="weadmin-body">
+  <!---会员信息区域Start-->
+    <form class="layui-form layui-form-pane">
+        <div class="layui-row">
+            <div class="layui-form-item">
+                <label class="layui-form-label">栏目名称</label>
+                <div class="layui-input-inline">
+                    <input type="text" class="layui-input title" value="{{ data.t_name }}" disabled="">
+                </div>
+            </div>
+            <div class="layui-form-item ">
+                <label class="layui-form-label">所属分类</label>
+                <div class="layui-input-inline">
+                    <input type="text" class="layui-input source" value="{{ data.pid_name }}" disabled="">
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label">栏目简介</label>
+                <div class="layui-input-inline">
+                    <input type="text" class="layui-input title" value="{{ data.t_info }}" disabled="">
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label">创建时间</label>
+                <div class="layui-input-inline">
+                    <input type="text" class="layui-input title" value="{{ data.t_addtime|date:'Y-m-d H:i:s' }}" disabled="">
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label">修改时间</label>
+                <div class="layui-input-inline">
+                    <input type="text" class="layui-input title" value="{{ data.t_altertime|date:'Y-m-d H:i:s' }}" disabled="">
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label">前台显示</label>
+                <div class="layui-input-block">
+                  <input type="radio" name="t_isdel" value="1" title="显示" {% if data.t_isdel == 1 %} checked  {% else %}  disabled="" {% endif %}>
+                  <input type="radio" name="t_isdel" value="0" title="不显示" {% if data.t_isdel == 0 %} checked {% else %} disabled="" {% endif %}>
+                </div>
+            </div>
+        </div>
+
+  </form>
+  <!---会员信息区域End-->
+</div>
+{% endblock %}
+
+{% block setjs %}
+<script src="/static/back/js/udetail.js" type="text/javascript" charset="utf-8"></script>
+{% endblock %}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

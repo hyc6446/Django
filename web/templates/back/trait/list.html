@@ -1,0 +1,131 @@
+{% extends 'back/public/base.html' %}
+
+{% block title %}商品属性列表{% endblock %}
+{% block mycss %}
+<link rel="stylesheet" href="/static/back/css/weadmin.css">
+{% endblock %}
+
+{% block currpath %}商品属性列表{% endblock %}
+{% block contains%}
+<div class="weadmin-body">
+  <!---搜索区域Start-->
+    <div class="weadmin-block userTable">
+        <button class="layui-btn" data-type="check" onclick="WeAdminShow('添加商品属性','{% url 'goods_trait_add' %}',800,400)"><i class="fa fa-plus-circle fa-lg layui-anim" aria-hidden="true"></i>&nbsp;&nbsp;添加商品属性</button>
+        <button class="layui-btn layui-btn-danger" lay-filter="trashlist"><i class="fa fa-trash fa-lg" aria-hidden="true"></i>&nbsp;&nbsp;回收站</button>
+        <!--<span class="fr" style="line-height:40px">共有数据：{{ count }}  条</span>-->
+    </div>
+  <!---搜索区域End-->
+
+  <!---表格区域Start-->
+
+    <table class="layui-table layui-hide" id="traitList" lay-filter="traitlist"></table>
+    <!--操作模块-->
+    <script type="text/html" id="operateTpl">
+        <!--<a title="查看栏目信息" class="layui-btn layui-btn-normal layui-btn-xs" href="javascript:;" lay-event="detail">-->
+            <!--<i class="fa fa-eye" aria-hidden="true"></i>-->
+            <!--查看-->
+        <!--</a>-->
+        <a title="编辑栏目信息" class="layui-btn layui-btn-xs" href="javascript:;" lay-event="edit">
+            <i class="fa fa-edit" aria-hidden="true"></i>&nbsp;修改
+        </a>
+    </script>
+    <script type="text/html" id="isdel">
+      {% verbatim %}{{#  if(d.a_isdel === 0){ }}{% endverbatim %}
+         <button class="layui-btn layui-btn-xs layui-bg-red" tid="{% verbatim %}{{ d.id }}{% endverbatim %}" value="{% verbatim %}{{ d.a_isdel }}{% endverbatim %}">禁用</button>
+      {% verbatim %}{{#  } else { }}{% endverbatim %}
+         <button class="layui-btn layui-btn-xs" tid="{% verbatim %}{{ d.id }}{% endverbatim %}" value="{% verbatim %}{{ d.a_isdel }}{% endverbatim %}">启用</button>
+      {% verbatim %}{{#  } }}{% endverbatim %}
+    </script>
+  <!---表格区域End-->
+
+</div>
+{% endblock %}
+
+{% block setjs %}
+<script>
+layui.extend({
+	admin: '{/}/static/back/js/admin'
+});
+layui.use(['table', 'jquery','form', 'admin'], function() {
+	var table = layui.table,
+		$ = layui.jquery,
+		form = layui.form,
+		admin = layui.admin;
+
+
+    //表格内容
+    tableIns =
+    table.render({
+        elem: '#traitList',
+        cellMinWidth: 80,
+        url:'{% url 'gettype' %}',
+        cols: [
+            [{
+                field: 'id',title: 'id',sort: true, align: 'center'
+            }, {
+                field: 'a_name',title: '属性名称', align: 'center'
+            }, {
+                field: 'pid_name',title: '上级属性', align: 'center'
+            }, {
+                field: 'a_info',title: '属性简介'
+            }, {
+                field: 'a_isdel',title: '属性状态',templet: '#isdel',sort: true, align: 'center'
+            },{
+                field: 'operate',title: '操作',toolbar: '#operateTpl',unresize: true, align: 'center'
+            }]
+        ],
+        event: true,
+        loading: true,
+        <!--page: {-->
+          <!--layout: ['count', 'prev', 'page', 'next']-->
+          <!--,groups: 5 //只显示 1 个连续页码-->
+          <!--,first: true //不显示首页-->
+          <!--,last: true //不显示尾页-->
+        <!--},-->
+        <!--count:{{ count }},-->
+        <!--limit:20,-->
+    });
+
+    //重载
+    $(function(){
+        form.render();
+    });
+
+
+    //修改商品属性信息
+    table.on('tool(traitlist)', function(obj){
+        var data = obj.data;
+        if(obj.event === 'edit'){
+            WeAdminEdit("修改商品属性信息","{% url "goods_trait_edit" %}", data.id, 700,500)
+        }
+    });
+
+
+
+});
+
+
+</script>
+
+{% endblock %}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

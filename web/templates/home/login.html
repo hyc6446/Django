@@ -1,0 +1,96 @@
+{% extends 'home/public/simplebase.html' %}
+{% block title %}会员登录{% endblock %}
+{% block container %}
+<div class="login-main-wrap">
+    <div class="login-main wrapper">
+        <div class="login-box">
+            <form action="" method="post" class="layui-form">
+            {% csrf_token %}
+            <div class="box-hd">
+                <span class="tit">用户登录</span>
+                <a href="{% url 'register' %}">注册新账号</a>
+            </div>
+            <label class="txtin-box">
+                <span class="ico user"></span>
+                <input class="txtin" type="text" id="username" name="username" lay-verify="required|username" autocomplete="on" placeholder="请输入用户名" />
+            </label>
+            <label class="txtin-box">
+                <span class="ico pwd"></span>
+                <input class="txtin" type="password" id="password" name="password"  lay-verify="required|password"  placeholder="输入密码" />
+            </label>
+            <div class="clearfix tool">
+                <input type="checkbox" name="autologin" lay-skin="primary" title="自动登录">
+                <a class="find" href="{% url 'forgotpwd' %}">忘记密码？</a>
+            </div>
+
+            <input class="tj" type="button" value="登&ensp;录" lay-submit="" lay-filter="subform" />
+        </form>
+        </div>
+    </div>
+</div>
+
+
+{% endblock %}
+
+{% block setjs %}
+<script>
+layui.extend({
+	admin: '{/}/static/back/js/admin'
+});
+layui.use(['form', 'jquery','element'], function() {
+	var form = layui.form,
+		$ = layui.jquery,
+        element = layui.element;
+
+      //自定义验证规则
+      form.verify({
+          username: function(value){ //value：表单的值、
+            if(!new RegExp("^[a-zA-Z][a-zA-Z0-9_]{4,15}$").test(value)){
+              return '用户名须已字母开头，允许5-16位字符，允许字母数字下划线';
+            }
+          }
+          ,password: [/(.+){6,12}$/, '密码必须6到12位']
+
+      });
+
+
+      //监听提交
+      form.on('submit(subform)',function(data){
+
+       //验证账号信息
+            $.ajax({
+                async: false,
+                data: {
+                    username: $('#username').val()
+                    ,password:$('#password').val()
+                },
+                dataType: 'json',
+                success: function(result) {
+                    console.log(result)
+                    if (result.code==1) {
+                        layer.msg('登陆成功', {time: 1000, icon:6,offset: '20px',anim: 6},function(){
+                            location.href = '/'
+                        });
+                    }
+                    if(result.code == 0){
+                        layer.msg('用户名或密码有误，请检查后登录', {time: 1000, icon:5,offset: '20px',anim: 6});
+                        return false;
+                    }
+                    if(result.code == -1){
+                        layer.msg('数据不正确或未知错误', {time: 1000, icon:2,offset: '20px',anim: 6});
+                        return false;
+                    }
+                },
+                error:function(){
+                    layer.msg('数据不正确或未知错误', {time: 1000, icon:2,offset: '20px',anim: 6});
+                    return false;
+                },
+                type: 'POST',
+                url: "{% url 'login' %}"
+            });
+
+       });
+
+});
+</script>
+{% endblock %}
